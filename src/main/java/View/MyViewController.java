@@ -1,18 +1,45 @@
 package View;
 
+import Model.MyModel;
 import ViewModel.MyViewModel;
+import algorithms.mazeGenerators.Maze;
+import algorithms.mazeGenerators.Position;
+import algorithms.search.Solution;
+import com.sun.prism.impl.VertexBuffer;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.VBox;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
+import javafx.scene.transform.Scale;
+import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.util.Duration;
+import org.omg.CORBA.portable.ValueBase;
 
-public class MyViewController implements IView{
+import java.io.File;
+import java.io.IOException;
+import java.net.URL;
+import java.util.Observable;
+import java.util.Observer;
+import java.util.ResourceBundle;
+
+
+public class MyViewController implements IView, Observer {
 
     private MyViewModel viewModel;
-    //public MazeDisplayer mazeDisplayer;
+    public mazeDisplayer mazeDisplayer;
     public javafx.scene.control.TextField txtfld_rowsNum;
     public javafx.scene.control.TextField txtfld_columnsNum;
     public javafx.scene.control.Label lbl_rowsNum;
@@ -35,33 +62,105 @@ public class MyViewController implements IView{
         alert.show();
     }
 
+    @Override
+    public void update(Observable o, Object arg) {
+        if (o == viewModel) {
+            displayMaze(viewModel.getMaze());
+            btn_generateMaze.setDisable(false);
+            int currentCol = viewModel.getCharacterPositionColumn();
+            int currentRow = viewModel.getCharacterPositionRow();
+            Maze maze1 = viewModel.getMaze();
+            boolean solved = viewModel.solvingHappened();
+            mazeDisplayer.setDone(solved);
+            mazeDisplayer.setMaze(maze1);
+            if (solved == true)
+            {
+                mazeDisplayer.writeSolution(viewModel.getSolution());
+            }
+        }
+    }
+
+    public void displayMaze(Maze maze) {
+        mazeDisplayer.setMaze(maze);
+        int characterPositionRow = viewModel.getCharacterPositionRow();
+        int characterPositionColumn = viewModel.getCharacterPositionColumn();
+        mazeDisplayer.setCharacterPosition(characterPositionRow, characterPositionColumn);
+        this.characterPositionRow.set(characterPositionRow + "");
+        this.characterPositionColumn.set(characterPositionColumn + "");
+    }
+
+
     public static void showAlert(String alertMessage) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setContentText(alertMessage);
         alert.show();
     }
-//    private void bindProperties(MyViewModel viewModel) {
-//        lbl_rowsNum.textProperty().bind(viewModel.characterPositionRow);
-//        lbl_columnsNum.textProperty().bind(viewModel.characterPositionColumn);
-//    }
+    ///////////////////////////
 
-//    @Override
-//    public void update(Observable o, Object arg) {
-//        if (o == viewModel) {
-//            displayMaze(viewModel.getMaze());
-//            btn_generateMaze.setDisable(false);
-//            int currentCol = viewModel.getCharacterPositionColumn();
-//            int currentRow = viewModel.getCharacterPositionRow();
-//            Maze maze1 = viewModel.getMaze();
-//            boolean solved = viewModel.solvingHappened();
-//            mazeDisplayer.setDone(solved);
-//            mazeDisplayer.setMaze(maze1);
-//            if (solved == true)
-//            {
-//                mazeDisplayer.writeSolution(viewModel.getSolution());
-//            }
-//        }
-//    }
+    public void setViewModel(MyViewModel viewModel) {
+        mazeDisplayer.initial();
+        this.viewModel = viewModel;
+        bindProperties(viewModel);
+    }
+
+    private void bindProperties(MyViewModel viewModel) {
+        lbl_rowsNum.textProperty().bind(viewModel.characterPositionRow);
+        lbl_columnsNum.textProperty().bind(viewModel.characterPositionColumn);
+    }
+
+    //region String Property for Binding
+    public StringProperty characterPositionRow = new SimpleStringProperty();
+    public StringProperty characterPositionColumn = new SimpleStringProperty();
+    public String getCharacterPositionRow() {
+        return characterPositionRow.get();
+    }
+    public StringProperty characterPositionRowProperty() {
+        return characterPositionRow;
+    }
+    public String getCharacterPositionColumn() {
+        return characterPositionColumn.get();
+    }
+    public StringProperty characterPositionColumnProperty() {
+        return characterPositionColumn;
+    }
+    public void setResizeEvent(Scene scene) {
+        scene.widthProperty().addListener(new ChangeListener<Number>() {
+            @Override
+            public void changed(ObservableValue<? extends Number> observableValue, Number oldSceneWidth, Number newSceneWidth) {
+                Scale fixedScale = new Scale();
+                double old = oldSceneWidth.doubleValue();
+                double fixed = newSceneWidth.doubleValue();
+                fixedScale.setPivotX(mazeDisplayer.getLayoutX() * (fixed/old));
+                fixedScale.setX(mazeDisplayer.getScaleX() * (fixed/old));
+                mazeDisplayer.getTransforms().add(fixedScale);
+            }
+        });
+        scene.heightProperty().addListener(new ChangeListener<Number>() {
+            @Override
+            public void changed(ObservableValue<? extends Number> observableValue, Number oldSceneHeight, Number newSceneHeight) {
+                Scale fixedScale = new Scale();
+                double old = oldSceneHeight.doubleValue();
+                double fixed = newSceneHeight.doubleValue();
+                fixedScale.setPivotY(mazeDisplayer.getLayoutY() * (fixed/old));
+                fixedScale.setY(mazeDisplayer.getScaleY() * (fixed/old));
+                mazeDisplayer.getTransforms().add(fixedScale);            }
+        });
+    }
+//////////////////////
+
+    public void KeyPressed(KeyEvent keyEvent) {
+        viewModel.moveCharacter(keyEvent.getCode());
+        keyEvent.consume();
+        if(mazeDisplayer.isDone()) {
+            txtfld_rowsNum.setDisable(false);
+            txtfld_columnsNum.setDisable(false);
+            Solve.setDisable(true);
+            CMaze.setDisable(false);
+            Start.setDisable(true);
+            showAlert("congratulation!, you won");
+
+        }
+    }
 
 
     public void generateMaze() {
@@ -74,11 +173,9 @@ public class MyViewController implements IView{
         viewModel.generateMaze(width, heigth);
     }
 
-
-
-
-
-
+    public void solveMaze(ActionEvent actionEvent) {
+        viewModel.SolveMaze();
+    }
 
     public void About(ActionEvent actionEvent){
         try{
@@ -131,6 +228,5 @@ public class MyViewController implements IView{
         viewModel.exitGame();
     }
 
-    public void solveMaze(ActionEvent actionEvent) {
-    }
+
 }

@@ -2,6 +2,7 @@ package sample;
 
 import View.MyViewController;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -11,6 +12,11 @@ import javax.imageio.IIOParam;
 import java.util.Observable;
 
 public class Main extends Application {
+
+    public static void exitGame(){
+        Platform.exit();
+        System.exit(0);
+    }
 
     @Override
     public void start(Stage primaryStage) throws Exception{
