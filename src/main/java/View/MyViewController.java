@@ -40,6 +40,29 @@ public class MyViewController implements IView{
         alert.setContentText(alertMessage);
         alert.show();
     }
+//    private void bindProperties(MyViewModel viewModel) {
+//        lbl_rowsNum.textProperty().bind(viewModel.characterPositionRow);
+//        lbl_columnsNum.textProperty().bind(viewModel.characterPositionColumn);
+//    }
+
+//    @Override
+//    public void update(Observable o, Object arg) {
+//        if (o == viewModel) {
+//            displayMaze(viewModel.getMaze());
+//            btn_generateMaze.setDisable(false);
+//            int currentCol = viewModel.getCharacterPositionColumn();
+//            int currentRow = viewModel.getCharacterPositionRow();
+//            Maze maze1 = viewModel.getMaze();
+//            boolean solved = viewModel.solvingHappened();
+//            mazeDisplayer.setDone(solved);
+//            mazeDisplayer.setMaze(maze1);
+//            if (solved == true)
+//            {
+//                mazeDisplayer.writeSolution(viewModel.getSolution());
+//            }
+//        }
+//    }
+
 
     public void generateMaze() {
         int heigth = Integer.valueOf(txtfld_rowsNum.getText());
@@ -48,7 +71,7 @@ public class MyViewController implements IView{
             showAlert("wrong INPUT");
         btn_generateMaze.setDisable(true);
         btn_solveMaze.setDisable(false);
-        //viewModel.generateMaze(width, heigth);
+        viewModel.generateMaze(width, heigth);
     }
 
 
@@ -108,4 +131,6 @@ public class MyViewController implements IView{
         viewModel.exitGame();
     }
 
+    public void solveMaze(ActionEvent actionEvent) {
+    }
 }

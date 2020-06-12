@@ -1,22 +1,59 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<?import javafx.scene.layout.ColumnConstraints?>
-<?import javafx.scene.layout.RowConstraints?>
-<?import javafx.scene.control.TextField?>
-<?import javafx.scene.control.Label?>
-<?import javafx.geometry.Insets?>
 <AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="View.MyViewController">
    <children>
       <BorderPane layoutX="5.0" layoutY="7.0" prefHeight="386.0" prefWidth="591.0">
+         <left>
+            <VBox prefHeight="200.0" prefWidth="192.0" spacing="5.0" BorderPane.alignment="CENTER">
+               <children>
+                  <GridPane prefHeight="337.0" prefWidth="182.0">
+                     <columnConstraints>
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                     </columnConstraints>
+                     <rowConstraints>
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                     </rowConstraints>
+                     <Label text="Maze rows:" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+                     <Label text="Maze columns:" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+                     <TextField fx:id="txtfld_rowsNum" disable="false" text="10" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+                     <TextField fx:id="txtfld_columnsNum" disable="false" text="10" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                     <Button fx:id="btn_generateMaze" onAction="#generateMaze" prefHeight="25.0" prefWidth="167.0" text="Generate Maze" GridPane.columnSpan="2" GridPane.rowIndex="3" />
+                     <Button fx:id="btn_solveMaze" cancelButton="true" disable="true" onAction="#solveMaze" prefHeight="25.0" prefWidth="167.0" text="Solve Maze" GridPane.columnSpan="2" GridPane.rowIndex="4" />
+                     <Label text="Player row:" GridPane.rowIndex="6" />
+                     <Label text="Player  column:" GridPane.rowIndex="7" />
+                     <Label fx:id="lbl_rowsNum" text="${controller}" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+                     <Label fx:id="lbl_columnsNum" GridPane.columnIndex="1" GridPane.rowIndex="7" />
+
+                  </GridPane>
+               </children>
+               <padding>
+                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+               </padding>
+            </VBox>
+         </left>
          <top>
             <MenuBar prefWidth="439.0" BorderPane.alignment="CENTER">
                <menus>
@@ -27,28 +64,26 @@
                         <MenuItem mnemonicParsing="false" text="Load" />
                      </items>
                   </Menu>
-                  <Menu fx:id="helpButton" mnemonicParsing="false" onAction="#Help" text="Help" />
-                  <Menu fx:id="aboutButton" mnemonicParsing="false" onAction="#About" text="About" />
+                  <Menu fx:id="helpButton" mnemonicParsing="false" text="Help">
+                     <items>
+                        <MenuItem mnemonicParsing="false" onAction="#Help" text="Help" />
+                     </items></Menu>
+                  <Menu fx:id="aboutButton" mnemonicParsing="false" text="About">
+                     <items>
+                        <MenuItem mnemonicParsing="false" onAction="#About" text="About" />
+                     </items></Menu>
                   <Menu mnemonicParsing="false" text="Options">
                      <items>
                         <MenuItem fx:id="propertiesButton" mnemonicParsing="false" onAction="#Properties" text="Properties" />
                      </items>
                   </Menu>
-                  <Menu mnemonicParsing="false" onAction="#Exit" text="Exit" />
+                  <Menu mnemonicParsing="false" text="Exit">
+                     <items>
+                        <MenuItem mnemonicParsing="false" onAction="#Exit" text="Exit" />
+                     </items></Menu>
                </menus>
             </MenuBar>
          </top>
-         <right>
-            <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
-               <children>
-                  <Button mnemonicParsing="false" onAction="#About" text="About" />
-                  <Button mnemonicParsing="false" onAction="#Help" text="Help" />
-                  <Button mnemonicParsing="false" onAction="#Properties" text="Properties" />
-                  <Button mnemonicParsing="false" text="Exit" />
-                  <Button mnemonicParsing="false" onAction="#generateMaze" text="new" />
-               </children>
-            </VBox>
-         </right>
       </BorderPane>
    </children>
 </AnchorPane>
