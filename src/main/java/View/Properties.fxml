@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+
+<AnchorPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="View.propertiesController"
+            prefHeight="400.0" prefWidth="600.0">
+    <children>
+        <VBox prefHeight="400.0" prefWidth="600.0">
+            <children>
+                <Label text="Properties">
+                    <VBox.margin>
+                        <Insets bottom="10.0" left="5.0" right="10.0" top="10.0" />
+                    </VBox.margin></Label>
+                <Label text="Maze Generator">
+                    <VBox.margin>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                    </VBox.margin></Label>
+                <ComboBox fx:id="Generator" prefWidth="150.0">
+                    <VBox.margin>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                    </VBox.margin></ComboBox>
+                <Label text="Searching Algorithm">
+                    <VBox.margin>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                    </VBox.margin></Label>
+                <ComboBox fx:id="Search" prefWidth="150.0">
+                    <VBox.margin>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                    </VBox.margin></ComboBox>
+                <Label text="Number Of Threads">
+                    <VBox.margin>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                    </VBox.margin></Label>
+                <TextField  fx:id="numOfT" maxWidth="150.0" prefHeight="27.0" prefWidth="30.0">
+                    <VBox.margin>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                    </VBox.margin></TextField>
+                <Button  fx:id="okB" mnemonicParsing="false" text="OK" onAction="#OK">
+                    <VBox.margin>
+                        <Insets bottom="10.0" left="100.0" right="10.0" top="10.0" />
+                    </VBox.margin></Button>
+            </children>
+        </VBox>
+    </children>
+</AnchorPane>
