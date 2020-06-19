@@ -12,11 +12,6 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
-
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.Observable;
@@ -24,12 +19,10 @@ import java.util.Observer;
 import java.util.Optional;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
-
 import javafx.scene.Scene;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.media.Media;
-import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
@@ -37,7 +30,6 @@ import javafx.scene.control.Alert;
 import javafx.event.EventHandler;
 import static javafx.geometry.Pos.CENTER;
 
-import javafx.event.EventHandler;
 public class MyViewController implements IView,Observer , Initializable {
 
     protected MyViewModel viewModel = MyViewModel.getInstance();
@@ -58,6 +50,9 @@ public class MyViewController implements IView,Observer , Initializable {
     public Button buttonSolveMaze;
     @FXML
     public Button mute;
+    @FXML
+    public Button buttonHideMaze;
+
     public boolean isMusic =true;
 
     StringProperty update_player_position_row = new SimpleStringProperty();
@@ -85,7 +80,6 @@ public class MyViewController implements IView,Observer , Initializable {
         lbl_player_column.textProperty().bind(update_player_position_col);
     }
 
-    //move character
     public void keyPressed(KeyEvent keyEvent) {
         viewModel.moveCharacter(keyEvent);
         keyEvent.consume();
@@ -180,6 +174,8 @@ public class MyViewController implements IView,Observer , Initializable {
             int cols = Integer.valueOf(strCols);
             viewModel.generateMaze(rows, cols);
             buttonSolveMaze.setDisable(false);
+            buttonHideMaze.setDisable(true);
+
             mute.setDisable(false);
 
         }
@@ -199,9 +195,16 @@ public class MyViewController implements IView,Observer , Initializable {
     }
 
     public void solveMaze(ActionEvent actionEvent) {
-        viewModel.SolveMaze();
+        mazeDisplayer.writeSolution(viewModel.getSolution());
+        buttonHideMaze.setDisable(false);
+//        viewModel.SolveMaze();
     }
 
+    public void hideMaze(ActionEvent actionEvent) {
+        mazeDisplayer.drawMaze(mazeDisplayer.getMaze());
+        buttonHideMaze.setDisable(true);
+
+    }
 //    public void About(ActionEvent actionEvent){
 //        try{
 //            Stage stage=new Stage();
@@ -383,20 +386,18 @@ public class MyViewController implements IView,Observer , Initializable {
 
     public void Exit(ActionEvent actionEvent) {
 
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Are you sure you want to exit?");
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Are you sure you want to EXIT?");
         Optional<ButtonType> result = alert.showAndWait();
         if (result.get() == ButtonType.OK) {
-            // ... user chose OK
-            // Close the program properly
             viewModel.exitGame();
         } else {
-            // ... user chose CANCEL or closed the dialog
+
             alert.close();
         }
 
     }
 
-    //stop/start music button
+    //stop or start music button
     public void mute(ActionEvent actionEvent) {
         if (isMusic){
             viewModel.mute(true);
@@ -414,4 +415,6 @@ public class MyViewController implements IView,Observer , Initializable {
             }
         }
     }
+
+
 }

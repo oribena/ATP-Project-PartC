@@ -76,7 +76,7 @@ public class Main extends Application {
             Scene scene = new Scene(layout, 960, 614);
             scene.getStylesheets().add(getClass().getResource("/View/WelcomeStyle.css").toExternalForm());
             stage.setScene(scene);
-            stage.initModality(Modality.APPLICATION_MODAL); //Lock the window until it closes
+            //stage.initModality(Modality.APPLICATION_MODAL); //Lock the window until it closes
             stage.show();
         } catch (Exception e) {
         }
@@ -85,16 +85,13 @@ public class Main extends Application {
     ///close the game
     private void setStageCloseEvent(Stage primaryStage, MyModel model) {
         primaryStage.setOnCloseRequest(event -> {
-            Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Are you sure you want to exit?");
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Are you sure you want to EXIT?");
             Optional<ButtonType> result = alert.showAndWait();
             if (result.get() == ButtonType.OK) {
-                // ... user chose OK
-                // Close the program properly
                 model.close();
                 primaryStage.close();
                 MyViewModel.getInstance().exitGame();
             } else {
-                // ... user chose CANCEL or closed the dialog
                 event.consume();
             }
 

@@ -7,25 +7,19 @@ import java.io.*;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import algorithms.mazeGenerators.Maze;
-
 import Server.ServerStrategyGenerateMaze;
 import Server.ServerStrategySolveSearchProblem;
-import algorithms.mazeGenerators.Position;
 import algorithms.search.AState;
 import algorithms.search.Solution;
 import javafx.scene.input.KeyCode;
 import Server.Server;
 import sample.Main;
-
 import javax.swing.*;
 import java.util.ArrayList;
 import java.util.Observable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
-
-import javafx.scene.media.Media;
-import javafx.scene.media.MediaPlayer;
 
 public class MyModel extends Observable implements IModel {
 
@@ -38,10 +32,8 @@ public class MyModel extends Observable implements IModel {
         return myModel;
     }
     java.lang.String s = new File("resources/Music/song.mp3").toURI().toString();
-    private MediaPlayer MediaPlayer;
     private ExecutorService threadPool = Executors.newCachedThreadPool();
     private Solution mazeSolution;
-    private Position newStart;
     private Server mazeGeneratingServer;
     private Server solveSearchProblemServer;
     private Maze maze;
@@ -52,15 +44,15 @@ public class MyModel extends Observable implements IModel {
     private int goalPosCol;
     private boolean wonGame;
     private ArrayList<AState> mazeSolutionSteps;
-    private ArrayList<int[][]> solution;
+
+
 
     public int[][] getMaze() {
         return mazeArray;
     }
 
-    public Solution getSolution() {
-
-        return mazeSolution;
+    public ArrayList<AState> getSolution() {
+        return mazeSolutionSteps;
     }
 
     public int getGoalPosRow() {
@@ -115,6 +107,7 @@ public class MyModel extends Observable implements IModel {
                     charPositionCol = maze.getStartPosition().getColumnIndex();
                     goalPosRow = maze.getGoalPosition().getRowIndex();
                     goalPosCol = maze.getGoalPosition().getColumnIndex();
+
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -123,6 +116,7 @@ public class MyModel extends Observable implements IModel {
             wonGame = false;
             setChanged();
             notifyObservers("generate");
+            solveMaze();
         } catch (UnknownHostException e) {
             e.printStackTrace();
         }
@@ -142,20 +136,23 @@ public class MyModel extends Observable implements IModel {
                     ObjectOutputStream toServer = new ObjectOutputStream(outToServer);
                     ObjectInputStream fromServer = new ObjectInputStream(inFromServer);
                     toServer.flush();
-                    newStart = new Position(charPositionRow,charPositionCol);
-                    maze.setStart(newStart);
+//                    newStart = new Position(charPositionRow,charPositionCol);
+
+//                    newStart = new Position(StartRow,StartCol);
+//                    maze.setStart(newStart);
                     toServer.writeObject(maze);
                     toServer.flush();
                     mazeSolution = (Solution)fromServer.readObject();
                     mazeSolutionSteps = mazeSolution.getSolutionPath();
+
 
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
             });
             client.communicateWithServer();
-            setChanged();
-            notifyObservers("solve");
+            //setChanged();
+            //notifyObservers("solve");
         } catch (UnknownHostException e) {
             e.printStackTrace();
         }
@@ -253,42 +250,6 @@ public class MyModel extends Observable implements IModel {
         notifyObservers("move");
     }
 
-//    public void save(String filePath) {
-//        try {
-//            FileOutputStream file = new FileOutputStream(filePath);
-//            ObjectOutputStream output = new ObjectOutputStream(file);
-//            output.writeObject(maze);
-//            output.flush();
-//            output.close();
-//            file.close();
-//            setChanged();
-//            notifyObservers("save");
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//    }
-//
-//    //check if to save maze to the curr maze , save player location?
-//    public void load(String filePath) {
-//        try {
-//            FileInputStream file = new FileInputStream(filePath);
-//            ObjectInputStream input = new ObjectInputStream(file);
-//            maze = (Maze)input.readObject();
-//            mazeArray = maze.getMat();
-//            charPositionRow = maze.getStartPosition().getRowIndex();
-//            charPositionCol = maze.getStartPosition().getColumnIndex();
-//            goalPosRow = maze.getGoalPosition().getRowIndex();
-//            goalPosCol = maze.getGoalPosition().getColumnIndex();
-//            wonGame = false;
-//            file.close();
-//            setChanged();
-//            notifyObservers("generate");
-//        } catch (IOException|ClassNotFoundException e) {
-//            e.printStackTrace();
-//        }
-//    }
-
-
     public void save() {
         JFileChooser file = new JFileChooser();
         if (file.showSaveDialog(null) == JFileChooser.APPROVE_OPTION){
@@ -349,8 +310,6 @@ public class MyModel extends Observable implements IModel {
 
     public void exitGame(){
         stopServers();
-        //generateTheMaze.stop();
-        //solveTheMaze.stop();
         Main.exitGame();
     }
 
@@ -359,7 +318,6 @@ public class MyModel extends Observable implements IModel {
             threadPool.shutdown();
             threadPool.awaitTermination(3, TimeUnit.SECONDS);
         } catch (InterruptedException e) {
-            //e.printStackTrace();
         }
     }
 }

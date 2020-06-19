@@ -1,16 +1,16 @@
 package ViewModel;
 
 import Model.MyModel;
-import algorithms.search.Solution;
+import algorithms.search.AState;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 
+import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Observer;
 
 public class MyViewModel extends Observable implements Observer{
-    //private MediaPlayer mdp_music;
     private MediaPlayer myMedia;
     private static MyViewModel myViewModel;
     private MyModel model;
@@ -20,6 +20,7 @@ public class MyViewModel extends Observable implements Observer{
     private int currPosRow;
     private int currPosCol;
     private boolean wonGame;
+    private ArrayList<AState> solution;
 
     private MyViewModel() {
         model = MyModel.getInstance();
@@ -63,6 +64,7 @@ public class MyViewModel extends Observable implements Observer{
                 notifyObservers("move");
             }
             else if (arg == "solve") {
+                solution = model.getSolution();
                 setChanged();
                 notifyObservers("solve");
             }
@@ -70,7 +72,7 @@ public class MyViewModel extends Observable implements Observer{
     }
 
 
-    public Solution getSolution() { return model.getSolution();}
+    public ArrayList<AState> getSolution() { return model.getSolution();}
 
     public boolean isWonGame() { return wonGame; }
 
@@ -105,19 +107,14 @@ public class MyViewModel extends Observable implements Observer{
         myMedia =new MediaPlayer(media);
         myMedia.setVolume(vol);
         myMedia.play();
-        //mdp_media.setAutoPlay(true);
     }
     public void pauseMusic(){
         if(myMedia !=null) {
             myMedia.stop();
         }
-//        if(mdp_music!=null) {
-//            mdp_music.stop();
-//        }
     }
 
     public void mute(boolean mute){
-        //mdp_music.setMute(mute);
         if (mute==true)
         {
         myMedia.setMute(mute);
@@ -125,9 +122,5 @@ public class MyViewModel extends Observable implements Observer{
         }
         else
             myMedia.play();
-
-//        if(!mute){
-//            mdp_music.play();
-//        }
     }
 }
