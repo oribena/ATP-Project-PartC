@@ -8,17 +8,10 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="View.propertiesController"
-            prefHeight="400.0" prefWidth="600.0">
+<AnchorPane prefHeight="614.0" prefWidth="960.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="View.propertiesController">
     <children>
-        <VBox prefHeight="400.0" prefWidth="600.0">
+        <VBox alignment="CENTER" prefHeight="614.0" prefWidth="960.0">
             <children>
-                <Label text="Properties">
-                    <VBox.margin>
-                        <Insets bottom="10.0" left="5.0" right="10.0" top="10.0" />
-                    </VBox.margin></Label>
                 <Label text="Maze Generator">
                     <VBox.margin>
                         <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
@@ -39,15 +32,23 @@
                     <VBox.margin>
                         <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                     </VBox.margin></Label>
-                <TextField  fx:id="numOfT" maxWidth="150.0" prefHeight="27.0" prefWidth="30.0">
+                <TextField fx:id="numOfT" maxWidth="150.0" prefHeight="27.0" prefWidth="30.0">
                     <VBox.margin>
                         <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                     </VBox.margin></TextField>
-                <Button  fx:id="okB" mnemonicParsing="false" text="OK" onAction="#OK">
+                <Button fx:id="okB" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#OK" text="Set Properties" textAlignment="CENTER">
                     <VBox.margin>
-                        <Insets bottom="10.0" left="100.0" right="10.0" top="10.0" />
-                    </VBox.margin></Button>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="10.0" />
+                    </VBox.margin>
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets></Button>
             </children>
         </VBox>
+      <Label layoutX="50.0" layoutY="100.0" text="Change properties:">
+         <opaqueInsets>
+            <Insets />
+         </opaqueInsets>
+      </Label>
     </children>
 </AnchorPane>

@@ -10,6 +10,7 @@ import algorithms.mazeGenerators.Maze;
 
 import Server.ServerStrategyGenerateMaze;
 import Server.ServerStrategySolveSearchProblem;
+import algorithms.mazeGenerators.Position;
 import algorithms.search.AState;
 import algorithms.search.Solution;
 import javafx.scene.input.KeyCode;
@@ -19,6 +20,10 @@ import sample.Main;
 import javax.swing.*;
 import java.util.ArrayList;
 import java.util.Observable;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
+
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 
@@ -33,9 +38,10 @@ public class MyModel extends Observable implements IModel {
         return myModel;
     }
     java.lang.String s = new File("resources/Music/song.mp3").toURI().toString();
-    private MediaPlayer MediaPlayer = new MediaPlayer(new Media(s));
-    //private ExecutorService threadPool = Executors.newCachedThreadPool();
+    private MediaPlayer MediaPlayer;
+    private ExecutorService threadPool = Executors.newCachedThreadPool();
     private Solution mazeSolution;
+    private Position newStart;
     private Server mazeGeneratingServer;
     private Server solveSearchProblemServer;
     private Maze maze;
@@ -53,8 +59,10 @@ public class MyModel extends Observable implements IModel {
     }
 
     public Solution getSolution() {
+
         return mazeSolution;
     }
+
     public int getGoalPosRow() {
         return goalPosRow;
     }
@@ -134,6 +142,8 @@ public class MyModel extends Observable implements IModel {
                     ObjectOutputStream toServer = new ObjectOutputStream(outToServer);
                     ObjectInputStream fromServer = new ObjectInputStream(inFromServer);
                     toServer.flush();
+                    newStart = new Position(charPositionRow,charPositionCol);
+                    maze.setStart(newStart);
                     toServer.writeObject(maze);
                     toServer.flush();
                     mazeSolution = (Solution)fromServer.readObject();
@@ -243,6 +253,40 @@ public class MyModel extends Observable implements IModel {
         notifyObservers("move");
     }
 
+//    public void save(String filePath) {
+//        try {
+//            FileOutputStream file = new FileOutputStream(filePath);
+//            ObjectOutputStream output = new ObjectOutputStream(file);
+//            output.writeObject(maze);
+//            output.flush();
+//            output.close();
+//            file.close();
+//            setChanged();
+//            notifyObservers("save");
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//    }
+//
+//    //check if to save maze to the curr maze , save player location?
+//    public void load(String filePath) {
+//        try {
+//            FileInputStream file = new FileInputStream(filePath);
+//            ObjectInputStream input = new ObjectInputStream(file);
+//            maze = (Maze)input.readObject();
+//            mazeArray = maze.getMat();
+//            charPositionRow = maze.getStartPosition().getRowIndex();
+//            charPositionCol = maze.getStartPosition().getColumnIndex();
+//            goalPosRow = maze.getGoalPosition().getRowIndex();
+//            goalPosCol = maze.getGoalPosition().getColumnIndex();
+//            wonGame = false;
+//            file.close();
+//            setChanged();
+//            notifyObservers("generate");
+//        } catch (IOException|ClassNotFoundException e) {
+//            e.printStackTrace();
+//        }
+//    }
 
 
     public void save() {
@@ -280,6 +324,12 @@ public class MyModel extends Observable implements IModel {
                 mazeSolution = (Solution) Out.readObject();
                 charPositionRow = (int) Out.readObject();
                 charPositionCol = (int) Out.readObject();
+                mazeArray = maze.getMat();
+                charPositionRow = maze.getStartPosition().getRowIndex();
+                charPositionCol = maze.getStartPosition().getColumnIndex();
+                goalPosRow = maze.getGoalPosition().getRowIndex();
+                goalPosCol = maze.getGoalPosition().getColumnIndex();
+                wonGame = false;
                 Input.close();
                 Out.close();
 
@@ -292,23 +342,24 @@ public class MyModel extends Observable implements IModel {
                 e.printStackTrace();
             }
         }
-
         //solved = false;
-        //Music();
         setChanged();
         notifyObservers("generate");
     }
 
-//    public void Music() {
-//        if (MediaPlayer!=null)
-//            MediaPlayer.stop();
-//
-//        MediaPlayer.play();
-//    }
     public void exitGame(){
         stopServers();
         //generateTheMaze.stop();
         //solveTheMaze.stop();
         Main.exitGame();
+    }
+
+    public void close() {
+        try {
+            threadPool.shutdown();
+            threadPool.awaitTermination(3, TimeUnit.SECONDS);
+        } catch (InterruptedException e) {
+            //e.printStackTrace();
+        }
     }
 }

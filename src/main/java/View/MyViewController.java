@@ -1,17 +1,23 @@
 package View;
 
 import ViewModel.MyViewModel;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.fxml.FXML;
+import javafx.scene.Parent;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.Observable;
 import java.util.Observer;
@@ -23,15 +29,12 @@ import javafx.scene.Scene;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.media.Media;
+import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import javafx.scene.control.Alert;
-
-import javafx.scene.media.MediaPlayer;
-
-import java.io.File;
-
+import javafx.event.EventHandler;
 import static javafx.geometry.Pos.CENTER;
 
 import javafx.event.EventHandler;
@@ -53,6 +56,9 @@ public class MyViewController implements IView,Observer , Initializable {
     public Button buttonGenerateMaze;
     @FXML
     public Button buttonSolveMaze;
+    @FXML
+    public Button mute;
+    public boolean isMusic =true;
 
     StringProperty update_player_position_row = new SimpleStringProperty();
     StringProperty update_player_position_col = new SimpleStringProperty();
@@ -97,15 +103,58 @@ public class MyViewController implements IView,Observer , Initializable {
         if (o instanceof MyViewModel)  { //if (o == viewModel)
             //setViewModel(viewModel);
             if (arg == "generate") {
+                isMusic = true;
                 mazeDisplayer.setMaze(viewModel.getMaze());
                 mazeDisplayer.set_goal_position(viewModel.getGoalPosRow(), viewModel.getGoalPosCol());
                 mazeDisplayer.set_player_position(viewModel.getCurrPosRow(), viewModel.getCurrPosCol());
                 mazeDisplayer.drawMaze(mazeDisplayer.getMaze());
                 buttonGenerateMaze.setDisable(false);
+                //Music
+                viewModel.pauseMusic();
+                try{
+                    viewModel.playMusic((new Media(getClass().getResource("/Music/song.mp3").toURI().toString())),200.0);
+                } catch (URISyntaxException e) {
+                    e.printStackTrace();
+                }
             }
             else if (arg == "move") {
-                if (viewModel.isWonGame() == true)
-                    showAlert("YOU WON!");
+                if (viewModel.isWonGame() == true) {
+//                    showAlert("YOU WON!");
+                    //Music
+                    viewModel.pauseMusic();
+                    try{
+                        viewModel.playMusic((new Media(getClass().getResource("/Music/claps.mp3").toURI().toString())),400.0);
+                    } catch (URISyntaxException e) {
+                        e.printStackTrace();
+                    }
+                    Stage stage = new Stage();
+                    stage.setTitle("YOU WON!!!");
+                    VBox layout = new VBox();
+                    HBox H = new HBox(5);
+                    H.setAlignment(CENTER);
+                    layout.setAlignment(CENTER);
+                    Button close = new Button();
+                    close.setText("play again!");
+                    H.getChildren().add(close);
+                    layout.spacingProperty().setValue(10);
+                    Image im = new Image("/Images/wonGif.gif");
+                    ImageView image = new ImageView(im);
+                    layout.getChildren().add(image);
+                    layout.getChildren().add(H);
+                    Scene scene = new Scene(layout, 520, 350);
+                    scene.getStylesheets().add(getClass().getResource("/View/LoadScene.css").toExternalForm());
+                    stage.setScene(scene);
+                    stage.initModality(Modality.APPLICATION_MODAL); //Lock the window until it closes
+                    stage.show();
+                    //close button
+                    close.setOnAction(new EventHandler<ActionEvent>() {
+                        @Override
+                        public void handle(ActionEvent event) {
+                            stage.close();
+                        }
+                    });
+                }
+
                 else
                     mazeDisplayer.set_player_position(viewModel.getCurrPosRow(), viewModel.getCurrPosCol());
             }
@@ -131,6 +180,8 @@ public class MyViewController implements IView,Observer , Initializable {
             int cols = Integer.valueOf(strCols);
             viewModel.generateMaze(rows, cols);
             buttonSolveMaze.setDisable(false);
+            mute.setDisable(false);
+
         }
         else
             showAlert("wrong INPUT");
@@ -169,7 +220,7 @@ public class MyViewController implements IView,Observer , Initializable {
     public void About(ActionEvent actionEvent) {
         try {
             Stage stage = new Stage();
-            stage.setTitle("About");
+            stage.setTitle("F.R.I.E.N.D.S Maze");
             VBox layout = new VBox();
             layout.setAlignment(CENTER);
             Button close = new Button();
@@ -190,7 +241,7 @@ public class MyViewController implements IView,Observer , Initializable {
                     stage.close();
                 }
             });
-            Scene scene = new Scene(layout, 768, 614);
+            Scene scene = new Scene(layout, 960, 614);
             scene.getStylesheets().add(getClass().getResource("/View/LoadScene.css").toExternalForm());
             stage.setScene(scene);
             stage.initModality(Modality.APPLICATION_MODAL); //Lock the window until it closes
@@ -202,7 +253,7 @@ public class MyViewController implements IView,Observer , Initializable {
     public void Help(ActionEvent actionEvent) {
         try {
             Stage stage = new Stage();
-            stage.setTitle("Help");
+            stage.setTitle("F.R.I.E.N.D.S Maze");
             VBox layout = new VBox();
             layout.setAlignment(CENTER);
             Button close = new Button();
@@ -220,7 +271,7 @@ public class MyViewController implements IView,Observer , Initializable {
                     stage.close();
                 }
             });
-            Scene scene = new Scene(layout, 768, 614);
+            Scene scene = new Scene(layout, 960, 614);
             scene.getStylesheets().add(getClass().getResource("/View/LoadScene.css").toExternalForm());
             stage.setScene(scene);
             stage.initModality(Modality.APPLICATION_MODAL); //Lock the window until it closes
@@ -245,82 +296,83 @@ public class MyViewController implements IView,Observer , Initializable {
 //        }
 //    }
 
-    public void Properties(ActionEvent actionEvent) {
-        try {
-            Stage stage = new Stage();
-            stage.setTitle("Properties Configuration");
-            VBox layout = new VBox();
-            HBox H = new HBox(3);
-
-            Label genLabel = new Label("Choose Generator:");
-            ComboBox<String> genCmb = new ComboBox<>();
-            genCmb.setPromptText("Generating Algorithm");
-            genCmb.getItems().addAll("simpleMazeGenerator", "myMazeGenerator");
-            H.getChildren().addAll(genLabel,genCmb);
-            layout.getChildren().add(H);
-            H.setAlignment(CENTER);
-
-            HBox H1 = new HBox(3);
-            Label solLabel = new Label("Choose Solver:");
-            ComboBox<String> solCmb = new ComboBox<>();
-            solCmb.setPromptText("Solving Algorithm");
-            solCmb.getItems().addAll("DepthFirstSearch", "BreadthFirstSearch","BestFirstSearch");
-            H1.getChildren().addAll(solLabel,solCmb);
-            layout.getChildren().add(H1);
-            H1.setAlignment(CENTER);
-
-            layout.setAlignment(CENTER);
-
-            Button close = new Button();
-            close.setText("Set Properties");
-            layout.spacingProperty().setValue(30);
-            layout.getChildren().addAll(close);
-            close.setOnAction(new EventHandler<ActionEvent>() {
-                @Override
-                public void handle(ActionEvent event) {
-                    FileOutputStream out = null;
-                    try {
-                        out = new FileOutputStream("./resources/config.properties");
-                    } catch (FileNotFoundException e) {
-                        e.printStackTrace();
-                    }
-                    String str = "SearchingAlgorithm = "+solCmb.getValue() +"\nMazeGenerator = "+genCmb.getValue() ;
-
-                    byte[] bytesss = str.getBytes();
-                    try {
-                        out.write(bytesss);
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                    stage.close();
-                }
-            });
-            Scene scene = new Scene(layout, 768, 614);
-            scene.getStylesheets().add(getClass().getResource("/View/LoadScene.css").toExternalForm());
-            stage.setScene(scene);
-            stage.initModality(Modality.APPLICATION_MODAL); //Lock the window until it closes
-            stage.show();
-
-
-        } catch (Exception e) {
-        }
-    }
-
-
-//    public void Properties() {
+//    public void Properties(ActionEvent actionEvent) {
 //        try {
 //            Stage stage = new Stage();
-//            stage.setTitle("properties");
-//            FXMLLoader fxmlLoader = new FXMLLoader();
-//            Parent root = (Parent)fxmlLoader.load(this.getClass().getResource("Properties.fxml").openStream());
-//            Scene scene = new Scene(root, 600.0D, 600.0D);
-//            stage.setScene(scene);
-//            stage.initModality(Modality.APPLICATION_MODAL);
-//            stage.show();
-//        } catch (Exception var5) {
-//        }
+//            stage.setTitle("Properties Configuration");
+//            VBox layout = new VBox();
+//            HBox H = new HBox(3);
 //
+//            Label genLabel = new Label("Choose Generator:");
+//            ComboBox<String> genCmb = new ComboBox<>();
+//            genCmb.setPromptText("Generating Algorithm");
+//            genCmb.getItems().addAll("SimpleMazeGenerator", "MyMazeGenerator");
+//            H.getChildren().addAll(genLabel,genCmb);
+//            layout.getChildren().add(H);
+//            H.setAlignment(CENTER);
+//
+//            HBox H1 = new HBox(3);
+//            Label solLabel = new Label("Choose Solver:");
+//            ComboBox<String> solCmb = new ComboBox<>();
+//            solCmb.setPromptText("Solving Algorithm");
+//            solCmb.getItems().addAll("DepthFirstSearch", "BreadthFirstSearch","BestFirstSearch");
+//            H1.getChildren().addAll(solLabel,solCmb);
+//            layout.getChildren().add(H1);
+//            H1.setAlignment(CENTER);
+//
+//            layout.setAlignment(CENTER);
+//
+//            Button close = new Button();
+//            close.setText("Set Properties");
+//            layout.spacingProperty().setValue(30);
+//            layout.getChildren().addAll(close);
+//            close.setOnAction(new EventHandler<ActionEvent>() {
+//                @Override
+//                public void handle(ActionEvent event) {
+//                    FileOutputStream out = null;
+//                    try {
+//                        out = new FileOutputStream("./resources/config.properties");
+//                    } catch (FileNotFoundException e) {
+//                        e.printStackTrace();
+//                    }
+//                    String str = "SearchingAlgorithm = "+solCmb.getValue() +"\nMazeGenerator = "+genCmb.getValue() ;
+//
+//                    byte[] bytesss = str.getBytes();
+//                    try {
+//                        out.write(bytesss);
+//                    } catch (IOException e) {
+//                        e.printStackTrace();
+//                    }
+//                    stage.close();
+//                }
+//            });
+//            Scene scene = new Scene(layout, 768, 614);
+//            scene.getStylesheets().add(getClass().getResource("/View/LoadScene.css").toExternalForm());
+//            stage.setScene(scene);
+//            stage.initModality(Modality.APPLICATION_MODAL); //Lock the window until it closes
+//            stage.show();
+//
+//
+//        } catch (Exception e) {
+//        }
 //    }
+
+
+    public void Properties() {
+        try {
+            Stage stage = new Stage();
+            stage.setTitle("F.R.I.E.N.D.S Maze");
+            FXMLLoader fxmlLoader = new FXMLLoader();
+            Parent root = (Parent)fxmlLoader.load(this.getClass().getResource("Properties.fxml").openStream());
+            Scene scene = new Scene(root, 960.0D, 614.0D);
+            stage.setScene(scene);
+            scene.getStylesheets().add(getClass().getResource("/View/LoadScene.css").toExternalForm());
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.show();
+        } catch (Exception var5) {
+        }
+
+    }
 
     public void load() {
         viewModel.load();
@@ -328,13 +380,6 @@ public class MyViewController implements IView,Observer , Initializable {
     public void save(){
         viewModel.save();
     }
-
-//    public void Music(){
-//        String s = new File("resources/Music/song.mp3").toURI().toString();
-//        MediaPlayer mp = new MediaPlayer(new Media(s));
-//        mp.play();
-//        //mediaPlayer.setAutoPlay(true);
-//    }
 
     public void Exit(ActionEvent actionEvent) {
 
@@ -351,5 +396,22 @@ public class MyViewController implements IView,Observer , Initializable {
 
     }
 
-
+    //stop/start music button
+    public void mute(ActionEvent actionEvent) {
+        if (isMusic){
+            viewModel.mute(true);
+            isMusic = false;
+        }
+        else
+        {
+            viewModel.mute(false);
+            isMusic=true;
+            viewModel.pauseMusic();
+            try{
+                viewModel.playMusic((new Media(getClass().getResource("/Music/song.mp3").toURI().toString())),200.0);
+            } catch (URISyntaxException e) {
+                e.printStackTrace();
+            }
+        }
+    }
 }

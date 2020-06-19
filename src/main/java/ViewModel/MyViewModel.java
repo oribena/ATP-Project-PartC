@@ -1,9 +1,7 @@
 package ViewModel;
 
 import Model.MyModel;
-import algorithms.mazeGenerators.Maze;
 import algorithms.search.Solution;
-import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
@@ -12,8 +10,8 @@ import java.util.Observable;
 import java.util.Observer;
 
 public class MyViewModel extends Observable implements Observer{
-    private MediaPlayer mdp_music;
-    private MediaPlayer mdp_media;
+    //private MediaPlayer mdp_music;
+    private MediaPlayer myMedia;
     private static MyViewModel myViewModel;
     private MyModel model;
     private int[][] mazeArray;
@@ -103,5 +101,33 @@ public class MyViewModel extends Observable implements Observer{
         //notifyObservers();
     }
 
+    public void playMusic(Media media,double vol){
+        myMedia =new MediaPlayer(media);
+        myMedia.setVolume(vol);
+        myMedia.play();
+        //mdp_media.setAutoPlay(true);
+    }
+    public void pauseMusic(){
+        if(myMedia !=null) {
+            myMedia.stop();
+        }
+//        if(mdp_music!=null) {
+//            mdp_music.stop();
+//        }
+    }
 
+    public void mute(boolean mute){
+        //mdp_music.setMute(mute);
+        if (mute==true)
+        {
+        myMedia.setMute(mute);
+        myMedia.setAutoPlay(!mute);
+        }
+        else
+            myMedia.play();
+
+//        if(!mute){
+//            mdp_music.play();
+//        }
+    }
 }

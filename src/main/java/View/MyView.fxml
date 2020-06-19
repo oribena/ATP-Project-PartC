@@ -1,50 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.canvas.Canvas?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.Menu?>
-<?import javafx.scene.control.MenuBar?>
-<?import javafx.scene.control.MenuItem?>
-<?import javafx.scene.control.TextField?>
-<?import javafx.scene.layout.BorderPane?>
-<?import javafx.scene.layout.ColumnConstraints?>
-<?import javafx.scene.layout.GridPane?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.Pane?>
-<?import javafx.scene.layout.RowConstraints?>
-<?import javafx.scene.layout.VBox?>
+<?import View.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
 
-<?import View.MazeDisplayer?>
-<BorderPane onMouseClicked="#mouseClicked" prefHeight="614.0" prefWidth="768.0" stylesheets="@MainStyle.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="View.MyViewController">
+<BorderPane onMouseClicked="#mouseClicked" prefHeight="614.0" prefWidth="960.0" stylesheets="@MainStyle.css" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="View.MyViewController">
     <left>
-        <VBox prefHeight="200.0" prefWidth="178.0" spacing="5.0" BorderPane.alignment="CENTER">
+        <VBox prefHeight="571.0" prefWidth="178.0" spacing="5.0" BorderPane.alignment="CENTER">
             <children>
-                <GridPane>
-                    <columnConstraints>
-                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                    </columnConstraints>
-                    <rowConstraints>
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                    </rowConstraints>
-                    <Label text="Maze rows:" GridPane.columnIndex="0" GridPane.rowIndex="0" />
-                    <Label text="Maze col:" GridPane.columnIndex="0" GridPane.rowIndex="1" />
-                    <TextField fx:id="textField_mazeRows"  text="10" GridPane.columnIndex="1" GridPane.rowIndex="0" />
-                    <TextField fx:id="textField_mazeColumns"  text="10" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                    <Button fx:id="buttonGenerateMaze" onAction="#generateMaze"  prefHeight="25.0" prefWidth="167.0" text="Generate Maze" GridPane.columnIndex="0" GridPane.columnSpan="2" GridPane.rowIndex="2" />
-                    <Button fx:id="buttonSolveMaze" cancelButton="true"  disable="true"  onAction="#solveMaze" prefHeight="25.0" prefWidth="167.0" text="Solve Maze" GridPane.columnIndex="0" GridPane.columnSpan="2" GridPane.rowIndex="3" />
-                    <Label text=" " GridPane.rowIndex="4" />
-                    <Label text=" " GridPane.rowIndex="5" />
-                    <Label fx:id="lbl_player_row" GridPane.columnIndex="1" GridPane.rowIndex="4" />
-                    <Label fx:id="lbl_player_column" GridPane.columnIndex="1" GridPane.rowIndex="5" />
-                </GridPane>
+            <Button fx:id="mute" disable="true" mnemonicParsing="false" onAction="#mute" prefHeight="41.0" prefWidth="78.0" text="Start/Stop&#10;Music" textAlignment="CENTER">
+               <VBox.margin>
+                  <Insets left="10.0" top="530.0" />
+               </VBox.margin>
+            </Button>
             </children>
             <padding>
                 <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
@@ -52,11 +21,7 @@
         </VBox>
     </left>
     <bottom>
-        <HBox BorderPane.alignment="CENTER">
-            <children>
-                <Label text="Status bar" />
-            </children>
-        </HBox>
+        <HBox BorderPane.alignment="CENTER" />
     </bottom>
     <top>
         <VBox BorderPane.alignment="CENTER">
@@ -96,9 +61,33 @@
         </VBox>
     </top>
     <center>
-        <Pane BorderPane.alignment="CENTER">
+        <Pane prefHeight="589.0" prefWidth="590.0" BorderPane.alignment="CENTER">
             <children>
-                <MazeDisplayer fx:id="mazeDisplayer" height="589.0" imagePath="./resources/Images/door.png" imageSolution="./resources/Images/door.png" imageFileNamePlayer="./resources/Images/ross.png" imageFileNameTarget="./resources/Images/door.png" imageFileNameWall="./resources/Images/newbrick.jpeg" onKeyPressed="#keyPressed" width="590.0" />
+                <MazeDisplayer fx:id="mazeDisplayer" height="589.0" imageFileNamePlayer="./resources/Images/rosi.png" imageFileNameTarget="./resources/Images/perk.png" imageFileNameWall="./resources/Images/newbrick.jpeg" imagePath="./resources/Images/cup.png" imageSolution="./resources/Images/cup.png" imageRed="./resources/Images/red.png" imageBlue="./resources/Images/blue.png" imageYellow="./resources/Images/yellow.png" layoutX="104.0" onKeyPressed="#keyPressed" width="590.0"  />
+                <GridPane layoutX="-115.0" layoutY="180.0" prefHeight="251.0" prefWidth="167.0">
+                    <columnConstraints>
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="77.0" minWidth="0.0" prefWidth="0.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="84.0" minWidth="10.0" prefWidth="84.0" />
+                    </columnConstraints>
+                    <rowConstraints>
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="78.0" minHeight="8.0" prefHeight="52.0" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="81.0" minHeight="10.0" prefHeight="51.0" vgrow="SOMETIMES" />
+                    </rowConstraints>
+                    <Label prefHeight="17.0" prefWidth="65.0" text="Maze rows:" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+                    <Label prefHeight="17.0" prefWidth="65.0" text="Maze col:" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+                    <TextField fx:id="textField_mazeRows" text="10" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+                    <TextField fx:id="textField_mazeColumns" text="10" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                    <Button fx:id="buttonGenerateMaze" onAction="#generateMaze" prefHeight="25.0" prefWidth="167.0" text="Generate Maze" GridPane.columnIndex="0" GridPane.columnSpan="2" GridPane.rowIndex="2" />
+                    <Button fx:id="buttonSolveMaze" cancelButton="true" disable="true" onAction="#solveMaze" prefHeight="25.0" prefWidth="167.0" text="Solve Maze" GridPane.columnIndex="0" GridPane.columnSpan="2" GridPane.rowIndex="3" />
+                    <Label text=" " GridPane.rowIndex="4" />
+                    <Label text=" " GridPane.rowIndex="5" />
+                    <Label fx:id="lbl_player_row" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                    <Label fx:id="lbl_player_column" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+                </GridPane>
             </children>
             <padding>
                 <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />

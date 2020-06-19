@@ -2,6 +2,8 @@ package View;
 
 import javafx.application.Platform;
 import javafx.fxml.Initializable;
+import javafx.scene.Scene;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import java.io.FileInputStream;
@@ -16,7 +18,6 @@ public class propertiesController implements Initializable{
     public javafx.scene.control.Button okB;
     public javafx.scene.control.ComboBox Generator;
     public javafx.scene.control.ComboBox Search;
-
 
     public void OK(){
 
@@ -36,7 +37,7 @@ public class propertiesController implements Initializable{
 
 
             FileOutputStream out = new FileOutputStream("resources/config.properties");
-            p.setProperty("NumOfThreads", numOfT.getText());
+            p.setProperty("Server.threadPoolSize", numOfT.getText());
             p.setProperty("SearchingAlgorithm", Search.getSelectionModel().getSelectedItem().toString());
             p.setProperty("MazeGenerator", Generator.getSelectionModel().getSelectedItem().toString());
             p.store(out, null);

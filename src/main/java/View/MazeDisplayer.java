@@ -21,12 +21,55 @@ public class MazeDisplayer extends Canvas {
     private int col_player;
     private int goalRow;
     private int goalCol;
-
+    private boolean solved;
+    private Solution currSol;
     StringProperty imageFileNameWall = new SimpleStringProperty();
     StringProperty imageFileNamePlayer = new SimpleStringProperty();
     StringProperty imageFileNameTarget = new SimpleStringProperty();
     StringProperty imageSolution = new SimpleStringProperty();
     StringProperty imagePath = new SimpleStringProperty();
+    StringProperty imageYellow = new SimpleStringProperty();
+    StringProperty imageRed= new SimpleStringProperty();
+    StringProperty imageBlue = new SimpleStringProperty();
+
+    public void setImageYellow(String imageYellow) {
+        this.imageYellow.set(imageYellow);
+    }
+
+    public void setImageRed(String imageRed) {
+        this.imageRed.set(imageRed);
+    }
+
+    public void setImageBlue(String imageBlue) {
+        this.imageBlue.set(imageBlue);
+    }
+
+
+    public String getImageYellow() {
+        return imageYellow.get();
+    }
+
+    public StringProperty imageYellowProperty() {
+        return imageYellow;
+    }
+
+    public String getImageRed() {
+        return imageRed.get();
+    }
+
+    public StringProperty imageRedProperty() {
+        return imageRed;
+    }
+
+    public String getImageBlue() {
+        return imageBlue.get();
+    }
+
+    public StringProperty imageBlueProperty() {
+        return imageBlue;
+    }
+
+
 
     public void setImagePath(String imagePath) {
         this.imagePath.set(imagePath);
@@ -94,6 +137,12 @@ public class MazeDisplayer extends Canvas {
         draw();
     }
 
+
+    double canvasHeight ;
+    double canvasWidth ;
+    double cellHeight ;
+    double cellWidth ;
+
     public void draw()
     {
         if(maze != null)
@@ -155,32 +204,63 @@ public class MazeDisplayer extends Canvas {
                 System.out.println("Can't find image");
             }
             graphicsContext.drawImage(targetImage, w_target, h_target, cellWidth, cellHeight);
-        }
-    }
+//            if (solved){
+//                canvasHeight = getHeight();
+//                canvasWidth = getWidth();
+//                cellHeight = canvasHeight / /*maze.length*/maze.length;
+//                cellWidth = canvasWidth / /*maze[0].length*/ maze[0].length;
+//                ArrayList<AState> path = currSol.getSolutionPath();
+//                GraphicsContext gc = getGraphicsContext2D();
+//                Image imageForSolution = null;
+//                try {
+//                    imageForSolution = new Image(new FileInputStream(getImageSolution()));
+//                } catch (FileNotFoundException e) {
+//                    System.out.println("Can't find image");
+//                }
+//                //String imageForSolution = this.imageSolution.getValue();
+//                if (imageForSolution == null)
+//                    gc.setFill(Color.RED);
+//                for (int i=1 ; i < path.size() - 1 ; i++){
+//                    gc.drawImage(imageForSolution, ((MazeState) path.get(i)).getPos().getColumnIndex()*cellWidth, ((MazeState) path.get(i)).getPos().getRowIndex()*cellHeight, cellWidth, cellHeight );
+                }
+            }
 
 
-    public void writeSolution(Solution solution){
+
+    public void writeSolution(Solution solution) {
+//        solved=true;
+//        currSol = solution;
+//        draw();
+
         double canvasHeight = getHeight();
         double canvasWidth = getWidth();
         double cellHeight = canvasHeight / /*maze.length*/maze.length;
         double cellWidth = canvasWidth / /*maze[0].length*/ maze[0].length;
         ArrayList<AState> path = solution.getSolutionPath();
         GraphicsContext gc = getGraphicsContext2D();
-        Image imageForSolution = null;
+        Image imageRed = null;
+        Image imageYellow = null;
+        Image imageBlue = null;
+
         try {
-            imageForSolution = new Image(new FileInputStream(getImageSolution()));
+            imageRed = new Image(new FileInputStream(getImageRed()));
+            imageYellow = new Image(new FileInputStream(getImageYellow()));
+            imageBlue = new Image(new FileInputStream(getImageBlue()));
         } catch (FileNotFoundException e) {
             System.out.println("Can't find image");
         }
-        //String imageSolution = this.imageSolution.getValue();
-        if (imageForSolution == null)
-            gc.setFill(Color.RED);
-        for (int i=1 ; i < path.size() - 1 ; i++){
-            gc.drawImage(imageForSolution, ((MazeState) path.get(i)).getPos().getColumnIndex()*cellWidth, ((MazeState) path.get(i)).getPos().getRowIndex()*cellHeight, cellWidth, cellHeight );
 
-            //gc.fillRect(((MazeState) path.get(i)).getPos().getColumnIndex()*cellWidth, ((MazeState) path.get(i)).getPos().getRowIndex()*cellHeight  , cellWidth,cellHeight);
+        //String imageForSolution = this.imageSolution.getValue();
+//        if (imageForSolution == null)
+//            gc.setFill(Color.RED);
+        for (int i=1 ; i < path.size() - 1 ; i+=3){
+            gc.drawImage(imageRed, ((MazeState) path.get(i)).getPos().getColumnIndex()*cellWidth, ((MazeState) path.get(i)).getPos().getRowIndex()*cellHeight, cellWidth, cellHeight );
+            if (i+1<path.size() - 1)
+                gc.drawImage(imageBlue, ((MazeState) path.get(i+1)).getPos().getColumnIndex()*cellWidth, ((MazeState) path.get(i+1)).getPos().getRowIndex()*cellHeight, cellWidth, cellHeight );
+            if (i+2<path.size() - 1)
+                gc.drawImage(imageYellow, ((MazeState) path.get(i+2)).getPos().getColumnIndex()*cellWidth, ((MazeState) path.get(i+2)).getPos().getRowIndex()*cellHeight, cellWidth, cellHeight );
+//            gc.fillRect(((MazeState) path.get(i)).getPos().getColumnIndex()*cellWidth, ((MazeState) path.get(i)).getPos().getRowIndex()*cellHeight  , cellWidth,cellHeight);
         }
-        //(mazeState)list
     }
 
     //////////////////////////////// delete
