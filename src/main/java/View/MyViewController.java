@@ -20,6 +20,7 @@ import java.util.Optional;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.scene.Scene;
+import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.media.Media;
@@ -103,6 +104,8 @@ public class MyViewController implements IView,Observer , Initializable {
                 mazeDisplayer.set_player_position(viewModel.getCurrPosRow(), viewModel.getCurrPosCol());
                 mazeDisplayer.drawMaze(mazeDisplayer.getMaze());
                 buttonGenerateMaze.setDisable(false);
+                //zoom in and out
+                this.zoom(mazeDisplayer);
                 //Music
                 viewModel.pauseMusic();
                 try{
@@ -156,6 +159,25 @@ public class MyViewController implements IView,Observer , Initializable {
                 mazeDisplayer.writeSolution(viewModel.getSolution());
             }
         }
+    }
+    public void zoom(MazeDisplayer pane) {
+        pane.setOnScroll(
+                new EventHandler<ScrollEvent>() {
+                    @Override
+                    public void handle(ScrollEvent event) {
+                        double zoomFactor = 1.05;
+                        double deltaY = event.getDeltaY();
+
+                        if (deltaY < 0) {
+                            zoomFactor = 0.95;
+                        }
+                        pane.setScaleX(pane.getScaleX() * zoomFactor);
+                        pane.setScaleY(pane.getScaleY() * zoomFactor);
+                        event.consume();
+                    }
+                });
+
+
     }
 
     public static void showAlert(String alertMessage) {

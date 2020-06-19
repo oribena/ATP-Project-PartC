@@ -13,6 +13,8 @@ import algorithms.search.AState;
 import algorithms.search.Solution;
 import javafx.scene.input.KeyCode;
 import Server.Server;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import sample.Main;
 import javax.swing.*;
 import java.util.ArrayList;
@@ -31,7 +33,6 @@ public class MyModel extends Observable implements IModel {
         }
         return myModel;
     }
-    java.lang.String s = new File("resources/Music/song.mp3").toURI().toString();
     private ExecutorService threadPool = Executors.newCachedThreadPool();
     private Solution mazeSolution;
     private Server mazeGeneratingServer;
@@ -45,6 +46,7 @@ public class MyModel extends Observable implements IModel {
     private boolean wonGame;
     private ArrayList<AState> mazeSolutionSteps;
 
+    private  MediaPlayer mediaPlayer;
 
 
     public int[][] getMaze() {
@@ -172,11 +174,19 @@ public class MyModel extends Observable implements IModel {
                     charPositionRow--;
                     getMaze()[charPositionRow][charPositionCol] = 2;
                 }
+                else
+                {
+                    playAudio("resources/Music/break.mp3");
+                }
                 break;
             case DOWN:
                 if( row<sizeRow-1 && getMaze()[row + 1][col] != 1) {
                     charPositionRow++;
                     getMaze()[charPositionRow][charPositionCol] = 2;
+                }
+                else
+                {
+                    playAudio("resources/Music/break.mp3");
                 }
                 break;
             case RIGHT:
@@ -184,11 +194,19 @@ public class MyModel extends Observable implements IModel {
                     charPositionCol++;
                     getMaze()[charPositionRow][charPositionCol] = 2;
                 }
+                else
+                {
+                    playAudio("resources/Music/break.mp3");
+                }
                 break;
             case LEFT:
                 if(col>0 && getMaze()[row][col - 1] != 1){
                     charPositionCol--;
                     getMaze()[charPositionRow][charPositionCol] = 2;
+                }
+                else
+                {
+                    playAudio("resources/Music/break.mp3");
                 }
                 break;
             case NUMPAD8:
@@ -196,11 +214,19 @@ public class MyModel extends Observable implements IModel {
                     charPositionRow--;
                     getMaze()[charPositionRow][charPositionCol] = 2;
                 }
+                else
+                {
+                    playAudio("resources/Music/break.mp3");
+                }
                 break;
             case NUMPAD2:
                 if( row<sizeRow-1 && getMaze()[row + 1][col] != 1) {
                     charPositionRow++;
                     getMaze()[charPositionRow][charPositionCol] = 2;
+                }
+                else
+                {
+                    playAudio("resources/Music/break.mp3");
                 }
                 break;
             case NUMPAD6:
@@ -208,11 +234,19 @@ public class MyModel extends Observable implements IModel {
                     charPositionCol++;
                     getMaze()[charPositionRow][charPositionCol] = 2;
                 }
+                else
+                {
+                    playAudio("resources/Music/break.mp3");
+                }
                 break;
             case NUMPAD4:
                 if(col>0 && getMaze()[row][col - 1] != 1){
                     charPositionCol--;
                     getMaze()[charPositionRow][charPositionCol] = 2;
+                }
+                else
+                {
+                    playAudio("resources/Music/break.mp3");
                 }
                 break;
             case NUMPAD3:
@@ -221,12 +255,20 @@ public class MyModel extends Observable implements IModel {
                     charPositionCol++;
                     getMaze()[charPositionRow][charPositionCol] = 2;
                 }
+                else
+                {
+                    playAudio("resources/Music/break.mp3");
+                }
                 break;
             case NUMPAD1:
                 if( row<sizeRow-1&& col>0 && getMaze()[row + 1][col-1] != 1) {
                     charPositionRow++;
                     charPositionCol--;
                     getMaze()[charPositionRow][charPositionCol] = 2;
+                }
+                else
+                {
+                    playAudio("resources/Music/break.mp3");
                 }
                 break;
             case NUMPAD7:
@@ -235,6 +277,10 @@ public class MyModel extends Observable implements IModel {
                     charPositionRow--;
                     getMaze()[charPositionRow][charPositionCol] = 2;
                 }
+                else
+                {
+                    playAudio("resources/Music/break.mp3");
+                }
                 break;
             case NUMPAD9:
                 if(row>0 &&   col<sizeCol-1 && getMaze()[row-1][col + 1] != 1){
@@ -242,12 +288,23 @@ public class MyModel extends Observable implements IModel {
                     charPositionRow--;
                     getMaze()[charPositionRow][charPositionCol] = 2;
                 }
+                else
+                {
+                    playAudio("resources/Music/break.mp3");
+                }
                 break;
         }
         //check if won the game
         if (charPositionRow == goalPosRow && charPositionCol == goalPosCol){ wonGame = true; }
         setChanged();
         notifyObservers("move");
+    }
+
+    protected void playAudio(String audio) {
+        String musicFile = audio;     // For example
+        Media sound = new Media(new File(musicFile).toURI().toString());
+        mediaPlayer = new MediaPlayer(sound);
+        mediaPlayer.play();
     }
 
     public void save() {
@@ -283,6 +340,7 @@ public class MyModel extends Observable implements IModel {
                 ObjectInputStream Out = new ObjectInputStream(Input);
                 maze = (Maze)Out.readObject();
                 mazeSolution = (Solution) Out.readObject();
+                mazeSolutionSteps = mazeSolution.getSolutionPath();
                 charPositionRow = (int) Out.readObject();
                 charPositionCol = (int) Out.readObject();
                 mazeArray = maze.getMat();

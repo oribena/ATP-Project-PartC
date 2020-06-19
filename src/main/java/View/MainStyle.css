@@ -1,9 +1,14 @@
 .root{
+
+
     -fx-background-image: url("/Images/home.png");
     -fx-background-repeat: repeat;
+    -fx-background-position: right;
     -fx-background-size: 960 680;
-    -fx-background-position: center center;
+
+
 }
+
 Label {
 
     -fx-text-fill: black;
@@ -13,11 +18,13 @@ Label {
 
 }
 
+
 Button {
     -fx-text-fill: black;
     -fx-font-family: 'Press Start 2P',Serif;
     -fx-font-weight: bold;
-    -fx-background-color: linear-gradient(#9C8CD4, lavender);
+    /*-fx-background-color: linear-gradient(#9C8CD4, lavender);*/
+    -fx-background-color: linear-gradient(#D2C385, lemonchiffon);
     -fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.6) , 5, 0.0 , 0 , 1 );
 }
 
