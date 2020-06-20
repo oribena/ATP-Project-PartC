@@ -81,8 +81,8 @@
                     </rowConstraints>
                     <Label prefHeight="17.0" prefWidth="65.0" text="Maze rows:" GridPane.columnIndex="0" GridPane.rowIndex="0" />
                     <Label prefHeight="17.0" prefWidth="65.0" text="Maze col:" GridPane.columnIndex="0" GridPane.rowIndex="1" />
-                    <TextField fx:id="textField_mazeRows" text="10" GridPane.columnIndex="1" GridPane.rowIndex="0" />
-                    <TextField fx:id="textField_mazeColumns" text="10" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                    <TextField fx:id="textField_mazeRows" text="20" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+                    <TextField fx:id="textField_mazeColumns" text="20" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                     <Button fx:id="buttonGenerateMaze" onAction="#generateMaze" prefHeight="25.0" prefWidth="167.0" text="Generate Maze" GridPane.columnIndex="0" GridPane.columnSpan="2" GridPane.rowIndex="2" />
                     <Button fx:id="buttonSolveMaze" cancelButton="true" disable="true" onAction="#solveMaze" prefHeight="25.0" prefWidth="78.0" text="Solve" GridPane.columnIndex="0" GridPane.columnSpan="3" GridPane.rowIndex="3" />
                     <Button fx:id="buttonHideMaze" cancelButton="true" disable="true" onAction="#hideMaze" prefHeight="25.0" prefWidth="84.0" text="Hide" GridPane.columnIndex="1" GridPane.columnSpan="3" GridPane.rowIndex="3" />

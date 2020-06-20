@@ -176,7 +176,7 @@ public class MyModel extends Observable implements IModel {
                 }
                 else
                 {
-                    playAudio("resources/Music/break.mp3");
+                    playAudio("resources/Music/pivot.mp3");
                 }
                 break;
             case DOWN:
@@ -186,7 +186,7 @@ public class MyModel extends Observable implements IModel {
                 }
                 else
                 {
-                    playAudio("resources/Music/break.mp3");
+                    playAudio("resources/Music/pivot.mp3");
                 }
                 break;
             case RIGHT:
@@ -196,7 +196,7 @@ public class MyModel extends Observable implements IModel {
                 }
                 else
                 {
-                    playAudio("resources/Music/break.mp3");
+                    playAudio("resources/Music/pivot.mp3");
                 }
                 break;
             case LEFT:
@@ -206,7 +206,7 @@ public class MyModel extends Observable implements IModel {
                 }
                 else
                 {
-                    playAudio("resources/Music/break.mp3");
+                    playAudio("resources/Music/pivot.mp3");
                 }
                 break;
             case NUMPAD8:
@@ -216,7 +216,7 @@ public class MyModel extends Observable implements IModel {
                 }
                 else
                 {
-                    playAudio("resources/Music/break.mp3");
+                    playAudio("resources/Music/pivot.mp3");
                 }
                 break;
             case NUMPAD2:
@@ -226,7 +226,7 @@ public class MyModel extends Observable implements IModel {
                 }
                 else
                 {
-                    playAudio("resources/Music/break.mp3");
+                    playAudio("resources/Music/pivot.mp3");
                 }
                 break;
             case NUMPAD6:
@@ -236,7 +236,7 @@ public class MyModel extends Observable implements IModel {
                 }
                 else
                 {
-                    playAudio("resources/Music/break.mp3");
+                    playAudio("resources/Music/pivot.mp3");
                 }
                 break;
             case NUMPAD4:
@@ -246,7 +246,7 @@ public class MyModel extends Observable implements IModel {
                 }
                 else
                 {
-                    playAudio("resources/Music/break.mp3");
+                    playAudio("resources/Music/pivot.mp3");
                 }
                 break;
             case NUMPAD3:
@@ -257,7 +257,7 @@ public class MyModel extends Observable implements IModel {
                 }
                 else
                 {
-                    playAudio("resources/Music/break.mp3");
+                    playAudio("resources/Music/pivot.mp3");
                 }
                 break;
             case NUMPAD1:
@@ -268,7 +268,7 @@ public class MyModel extends Observable implements IModel {
                 }
                 else
                 {
-                    playAudio("resources/Music/break.mp3");
+                    playAudio("resources/Music/pivot.mp3");
                 }
                 break;
             case NUMPAD7:
@@ -279,7 +279,7 @@ public class MyModel extends Observable implements IModel {
                 }
                 else
                 {
-                    playAudio("resources/Music/break.mp3");
+                    playAudio("resources/Music/pivot.mp3");
                 }
                 break;
             case NUMPAD9:
@@ -290,7 +290,7 @@ public class MyModel extends Observable implements IModel {
                 }
                 else
                 {
-                    playAudio("resources/Music/break.mp3");
+                    playAudio("resources/Music/pivot.mp3");
                 }
                 break;
         }
