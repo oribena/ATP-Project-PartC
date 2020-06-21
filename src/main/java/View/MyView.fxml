@@ -5,19 +5,34 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<BorderPane onMouseClicked="#mouseClicked" prefHeight="614.0" prefWidth="960.0" stylesheets="@MainStyle.css" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="View.MyViewController">
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.image.Image?>
+<BorderPane fx:id="borderPane" onMouseClicked="#mouseClicked" prefHeight="614.0" prefWidth="960.0" stylesheets="@MainStyle.css" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="View.MyViewController">
     <left>
-        <VBox prefHeight="571.0" prefWidth="178.0" spacing="5.0" BorderPane.alignment="CENTER">
+        <VBox prefHeight="416.0" prefWidth="178.0" spacing="5.0" BorderPane.alignment="CENTER">
             <children>
-            <Button fx:id="mute" disable="true" mnemonicParsing="false" onAction="#mute" prefHeight="41.0" prefWidth="78.0" text="Start/Stop&#10;Music" textAlignment="CENTER">
-               <VBox.margin>
-                  <Insets left="10.0" top="530.0" />
+            <Button fx:id="mute" alignment="CENTER" contentDisplay="CENTER" disable="true" mnemonicParsing="false" onAction="#mute" prefHeight="60.0" prefWidth="60.0" text="" textAlignment="CENTER">
+                <VBox.margin>
+                  <Insets left="10.0" top="500.0" />
                </VBox.margin>
+                <graphic>
+                    <ImageView fitHeight="60.0" fitWidth="60.0" pickOnBounds="true" preserveRatio="true">
+                        <image>
+                            <Image url="/Images/mute2.png" />
+                        </image>
+                    </ImageView>
+                </graphic>
             </Button>
             </children>
             <padding>
                 <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
             </padding>
+         <opaqueInsets>
+            <Insets top="50.0" />
+         </opaqueInsets>
+         <BorderPane.margin>
+            <Insets />
+         </BorderPane.margin>
         </VBox>
     </left>
     <bottom>
@@ -61,10 +76,10 @@
         </VBox>
     </top>
     <center>
-        <Pane prefHeight="589.0" prefWidth="590.0" BorderPane.alignment="CENTER">
+        <Pane fx:id="pane" prefHeight="589.0" prefWidth="590.0" BorderPane.alignment="CENTER">
             <children>
-                <MazeDisplayer fx:id="mazeDisplayer" height="589.0" imageBlue="./resources/Images/blue.png" imageFileNamePlayer="./resources/Images/rosi.png" imageFileNameTarget="./resources/Images/perk.png" imageFileNameWall="./resources/Images/newbrick.jpeg" imagePath="./resources/Images/cup.png" imageRed="./resources/Images/red.png" imageSolution="./resources/Images/cup.png" imageYellow="./resources/Images/yellow.png" layoutX="124.0" onKeyPressed="#keyPressed" width="590.0" />
-                <GridPane layoutX="-142.0" layoutY="180.0" prefHeight="251.0" prefWidth="167.0">
+                <MazeDisplayer fx:id="mazeDisplayer" height="589.0" imageBlue="./resources/Images/blue.png" imageFileNamePlayer="./resources/Images/rosss.png" imageFileNameTarget="./resources/Images/perk.png" imageFileNameWall="./resources/Images/newbrick.jpeg" imagePath="./resources/Images/cup.png" imageRed="./resources/Images/red.png" imageSolution="./resources/Images/cup.png" imageYellow="./resources/Images/yellow.png" layoutX="107.0" onKeyPressed="#keyPressed" width="590.0" />
+                <GridPane layoutX="-111.0" layoutY="180.0" prefHeight="251.0" prefWidth="167.0">
                     <columnConstraints>
                         <ColumnConstraints hgrow="SOMETIMES" maxWidth="77.0" minWidth="0.0" prefWidth="0.0" />
                         <ColumnConstraints hgrow="SOMETIMES" maxWidth="84.0" minWidth="10.0" prefWidth="84.0" />
@@ -92,6 +107,16 @@
                     <Label fx:id="lbl_player_row" GridPane.columnIndex="1" GridPane.rowIndex="4" />
                     <Label fx:id="lbl_player_column" GridPane.columnIndex="1" GridPane.rowIndex="5" />
                 </GridPane>
+                <Button fx:id="logo" layoutX="-118.0" layoutY="45.0" mnemonicParsing="false" prefHeight="80.0"
+                        prefWidth="168.0">
+                    <graphic>
+                        <ImageView fitHeight="130.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true">
+                            <image>
+                                <Image url="/Images/logo.png"/>
+                            </image>
+                        </ImageView>
+                    </graphic>
+                </Button>
             </children>
             <padding>
                 <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />

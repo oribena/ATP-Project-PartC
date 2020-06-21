@@ -8,36 +8,47 @@
 
 Button {
     -fx-text-fill: black;
-    -fx-font-family: 'Press Start 2P',Serif;
-
+    -fx-font-family: 'myFirstFont',Serif;
+    /*-fx-background-radius: 100;*/
     -fx-font-size: 16;
     -fx-border-color:transparent;
     -fx-font-weight: bold;
-    -fx-background-color: linear-gradient(#9C8CD4, lavender);
+    -fx-background-color: linear-gradient(#D2C385, lemonchiffon);
     -fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.6) , 5, 0.0 , 0 , 1 );
+    -fx-background-radius: 100;
 
 }
-/*@font-face {*/
-/*    font-family: 'Press Start 2P';*/
-/*    src: url('Font/PressStart2P-Regular.ttf');*/
-/*}*/
 
+@font-face {
+    font-family: 'myFirstFont';
+    src: url('Music/GABRWFFR.TTF');
+    font-weight: bold;
+}
 Label {
 
-    -fx-font-family: 'Press Start 2P',Serif;
+    -fx-font-family: 'myFirstFont',Serif;
     -fx-font-weight: bold;
     -fx-font-size: 18;
 
 }
 Button:hover{
 
-    -fx-padding: 0.333333em 0.666667em 0.333333em 0.666667em; /* 4 8 4 8 */
+    -fx-padding: 0.333333em 0.666667em 0.333333em 0.666667em;
     -fx-text-fill: #e8fffc;
     -fx-alignment: CENTER;
     -fx-content-display: LEFT;
+
 }
 
 ComboBox{
+    -fx-text-fill: black;
+    -fx-font-family: "Press Start 2P",Serif;
+    -fx-font-weight: bold;
+    -fx-border-color:black;
+    -fx-background-color: lemonchiffon;
+}
+
+#numOfT{
     -fx-text-fill: black;
     -fx-font-family: "Press Start 2P";
     -fx-font-weight: bold;
@@ -45,11 +56,17 @@ ComboBox{
     -fx-background-color: lemonchiffon;
 }
 
-#cmbLoad{
+.combo-box-popup .list-view .list-cell:filled:selected, .combo-box-popup .list-view
+{
+
+    -fx-background-color: white;
     -fx-text-fill: black;
-    -fx-font-family: "Press Start 2P";
-    -fx-font-weight: bold;
-    -fx-border-color:black;
-    -fx-background-color: #5a919a;
+}
+.combo-box-popup .list-view .list-cell:filled:hover
+{
+    -fx-background-color: lemonchiffon;
+    -fx-text-fill: black;
+
+    /*-fx-text-fill: -fx-text-inner-color;*/
 }
 

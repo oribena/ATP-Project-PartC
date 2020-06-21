@@ -15,6 +15,8 @@ import javafx.scene.input.KeyCode;
 import Server.Server;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import sample.Main;
 import javax.swing.*;
 import java.util.ArrayList;
@@ -45,8 +47,8 @@ public class MyModel extends Observable implements IModel {
     private int goalPosCol;
     private boolean wonGame;
     private ArrayList<AState> mazeSolutionSteps;
-
     private  MediaPlayer mediaPlayer;
+    private static final Logger LOG = LogManager.getLogger(); //Log4j2
 
 
     public int[][] getMaze() {
@@ -77,11 +79,13 @@ public class MyModel extends Observable implements IModel {
         return wonGame;
     }
 
-
-    //constructor
     private MyModel() {
         mazeGeneratingServer = new Server(5400, 1000, new ServerStrategyGenerateMaze());
+        LOG.info("Start generate maze server port 5400");
         solveSearchProblemServer = new Server(5401, 1000, new ServerStrategySolveSearchProblem());
+        LOG.info("Start Search Problem server port 5400");
+
+        // start the servers
         mazeGeneratingServer.start();
         solveSearchProblemServer.start();
     }
@@ -93,6 +97,9 @@ public class MyModel extends Observable implements IModel {
         try {
             Client client = new Client(InetAddress.getLocalHost(), 5400, (IClientStrategy) (inFromServer, outToServer) -> {
                 try {
+                    LOG.info("Server is waiting for clients...");
+                    LOG.info("client has been found!");
+                    LOG.info("Generate maze");
                     ObjectOutputStream toServer = new ObjectOutputStream(outToServer);
                     ObjectInputStream fromServer = new ObjectInputStream(inFromServer);
                     toServer.flush();
@@ -120,6 +127,7 @@ public class MyModel extends Observable implements IModel {
             notifyObservers("generate");
             solveMaze();
         } catch (UnknownHostException e) {
+            LOG.info("Exception");
             e.printStackTrace();
         }
     }
@@ -127,7 +135,10 @@ public class MyModel extends Observable implements IModel {
     @Override
     public void stopServers() {
         mazeGeneratingServer.stop();
+        LOG.info("Stop generate maze server");
         solveSearchProblemServer.stop();
+        LOG.info("Stop Search Problem server");
+
     }
 
     @Override
@@ -135,27 +146,27 @@ public class MyModel extends Observable implements IModel {
         try {
             Client client = new Client(InetAddress.getLocalHost(), 5401, (IClientStrategy) (inFromServer, outToServer) -> {
                 try {
+                    LOG.info("Server is waiting for clients...");
+                    LOG.info("client has been found!");
+                    LOG.info("Solve maze");
                     ObjectOutputStream toServer = new ObjectOutputStream(outToServer);
                     ObjectInputStream fromServer = new ObjectInputStream(inFromServer);
                     toServer.flush();
-//                    newStart = new Position(charPositionRow,charPositionCol);
-
-//                    newStart = new Position(StartRow,StartCol);
-//                    maze.setStart(newStart);
                     toServer.writeObject(maze);
                     toServer.flush();
                     mazeSolution = (Solution)fromServer.readObject();
                     mazeSolutionSteps = mazeSolution.getSolutionPath();
-
-
                 } catch (Exception e) {
                     e.printStackTrace();
+                    LOG.info("Exception");
+
                 }
             });
             client.communicateWithServer();
             //setChanged();
             //notifyObservers("solve");
         } catch (UnknownHostException e) {
+            LOG.info("Exception");
             e.printStackTrace();
         }
     }
@@ -163,7 +174,6 @@ public class MyModel extends Observable implements IModel {
 
     @Override
     public void moveCharacter(KeyCode movement) {
-        //solved = false;
         int row = getCharacterPositionRow();
         int col = getCharacterPositionCol();
         int sizeRow = getMaze().length;
@@ -176,6 +186,7 @@ public class MyModel extends Observable implements IModel {
                 }
                 else
                 {
+                    //play wrong way sound
                     playAudio("resources/Music/pivot.mp3");
                 }
                 break;
@@ -294,14 +305,14 @@ public class MyModel extends Observable implements IModel {
                 }
                 break;
         }
-        //check if won the game
+        //check if won
         if (charPositionRow == goalPosRow && charPositionCol == goalPosCol){ wonGame = true; }
         setChanged();
         notifyObservers("move");
     }
 
     protected void playAudio(String audio) {
-        String musicFile = audio;     // For example
+        String musicFile = audio;
         Media sound = new Media(new File(musicFile).toURI().toString());
         mediaPlayer = new MediaPlayer(sound);
         mediaPlayer.play();
@@ -315,9 +326,9 @@ public class MyModel extends Observable implements IModel {
                 FileOutputStream fos = new FileOutputStream(new File(f.getAbsolutePath()));
                 ObjectOutputStream oos = new ObjectOutputStream(fos);
                 oos.writeObject(maze);
-                oos.writeObject(mazeSolution);
                 oos.writeObject(charPositionRow);
                 oos.writeObject(charPositionCol);
+                oos.writeObject(mazeSolution);
                 fos.flush();
                 fos.close();
                 oos.flush();
@@ -361,7 +372,6 @@ public class MyModel extends Observable implements IModel {
                 e.printStackTrace();
             }
         }
-        //solved = false;
         setChanged();
         notifyObservers("generate");
     }

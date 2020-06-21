@@ -9,10 +9,16 @@
 
 }
 
+@font-face {
+    font-family: 'myFirstFont';
+    src: url("Music/GABRWFFR.TTF");
+    font-weight: bold;
+}
+
 Label {
 
     -fx-text-fill: black;
-    -fx-font-family: 'Press Start 2P',Serif;
+    -fx-font-family: 'myFirstFont',Serif;
     -fx-font-weight: bold;
     -fx-font-size: 12;
 
@@ -28,6 +34,14 @@ Button {
     -fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.6) , 5, 0.0 , 0 , 1 );
 }
 
+Button#mute{
+    -fx-background-radius: 100;
+    -fx-background-color: transparent;
+}
+Button#logo{
+    -fx-background-color: transparent;
+
+}
 Button:hover{
     -fx-background-color: -fx-shadow-highlight-color, -fx-outer-border, -fx-inner-border, -fx-body-color;
     -fx-background-insets: 0 0 -1 0, 0, 1, 2;

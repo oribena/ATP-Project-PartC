@@ -1,11 +1,7 @@
 package View;
 
-import javafx.application.Platform;
 import javafx.fxml.Initializable;
-import javafx.scene.Scene;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
-
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -26,12 +22,12 @@ public class propertiesController implements Initializable{
             Properties p = new Properties();
             p.load(in);
             in.close();
-            if(!isInt(numOfT.getText()) || numOfT.getText().trim().isEmpty()){
-                MyViewController.showAlert("Enter a int number in num of threads field");
+            if(!isValidInt(numOfT.getText()) || numOfT.getText().trim().isEmpty()){
+                MyViewController.showAlert("Enter an integer in num of threads field");
                 return;
             }
             if(Integer.valueOf(numOfT.getText()) < 1){
-                MyViewController.showAlert("Enter num of threads bigger than 0");
+                MyViewController.showAlert("Num of threads needs to be bigger than zero");
                 return;
             }
 
@@ -49,19 +45,12 @@ public class propertiesController implements Initializable{
         }
 
 
-        MyViewController.showAlert("The Properties has changed");
+        MyViewController.showAlert("The Properties has changed successfully!");
         Stage s = (Stage)okB.getScene().getWindow();
         s.close();
 
     }
-    public  static boolean isInt(String s){
-        /*boolean flag = true;
-        for(int i =0; i < s.length(); i++){
-            if(s.charAt(i)<= 9 && s.charAt(i)>=0){
-                flag = false;
-            }
-        }
-        return flag;*/
+    public  static boolean isValidInt(String s){
         try{
             int x = Integer.parseInt(s);
             return true;
@@ -90,7 +79,7 @@ public class propertiesController implements Initializable{
             in.close();
             Search.setValue(p.getProperty("SearchingAlgorithm"));
             Generator.setValue((p.getProperty("MazeGenerator")));
-            numOfT.setText(p.getProperty("NumOfThreads"));
+            numOfT.setText(p.getProperty("Server.threadPoolSize"));
         }
         catch(IOException e)
         {
