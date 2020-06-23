@@ -47,14 +47,21 @@ public class MyViewModel extends Observable implements Observer{
     @Override
     public void update(Observable o, Object arg) {
         if (o instanceof MyModel) {
-            if (arg == "generate") {
+            if (arg == "generate" || arg == "load") {
                 mazeArray = model.getMaze();
                 currPosRow = model.getCharacterPositionRow();
                 currPosCol = model.getCharacterPositionCol();
                 goalPosRow = model.getGoalPosRow();
                 goalPosCol = model.getGoalPosCol();
-                setChanged();
-                notifyObservers("generate");
+                if (arg == "generate"){
+                    setChanged();
+                    notifyObservers("generate");
+                }
+                if (arg == "load"){
+                    setChanged();
+                    notifyObservers("load");
+                }
+
             }
             else if (arg == "move") {
                 currPosRow = model.getCharacterPositionRow();

@@ -63,6 +63,7 @@ public class MyViewController implements IView,Observer , Initializable {
     public BorderPane borderPane;
 
     public boolean isMusic =true;
+    public boolean alreadyGenerate =false;
 
     StringProperty update_player_position_row = new SimpleStringProperty();
     StringProperty update_player_position_col = new SimpleStringProperty();
@@ -126,7 +127,11 @@ public class MyViewController implements IView,Observer , Initializable {
     @Override
     public void update(Observable o, Object arg) {
         if (o == viewModel)  { //if (o instanceof MyViewModel)
-            if (arg == "generate") {
+            if (arg == "generate" || arg == "load") {
+                if (arg == "load"){
+
+                }
+
                 isMusic = true;
                 mazeDisplayer.setMaze(viewModel.getMaze());
                 mazeDisplayer.set_goal_position(viewModel.getGoalPosRow(), viewModel.getGoalPosCol());
@@ -218,6 +223,7 @@ public class MyViewController implements IView,Observer , Initializable {
 
     public void generateMaze()
     {
+        alreadyGenerate = true;
         viewModel.addObserver(this);
         String strRows = textField_mazeRows.getText();
         String strCols = textField_mazeColumns.getText();
@@ -400,13 +406,23 @@ public class MyViewController implements IView,Observer , Initializable {
 //    }
 
     public void load() {
-        buttonSolveMaze.setDisable(false);
-        buttonHideMaze.setDisable(true);
-        viewModel.load();
+        if (alreadyGenerate == false) {
+            showAlert("Please generate maze first");
+        }
+        else {
+            buttonSolveMaze.setDisable(false);
+            buttonHideMaze.setDisable(true);
+            viewModel.load();
+        }
     }
 
     public void save(){
-        viewModel.save();
+        if (alreadyGenerate == false) {
+            showAlert("Please generate maze first");
+        }
+        else {
+            viewModel.save();
+        }
     }
 
     public void Exit(ActionEvent actionEvent) {

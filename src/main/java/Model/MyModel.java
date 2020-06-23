@@ -375,7 +375,7 @@ public class MyModel extends Observable implements IModel {
             }
         }
         setChanged();
-        notifyObservers("generate");
+        notifyObservers("load");
     }
 
     public void exitGame(){
