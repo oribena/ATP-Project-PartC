@@ -15,13 +15,13 @@
                 <VBox.margin>
                   <Insets left="10.0" top="500.0" />
                </VBox.margin>
-                <graphic>
-                    <ImageView fitHeight="60.0" fitWidth="60.0" pickOnBounds="true" preserveRatio="true">
-                        <image>
-                            <Image url="/Images/mute2.png" />
-                        </image>
-                    </ImageView>
-                </graphic>
+<!--                <graphic>-->
+<!--                    <ImageView fitHeight="60.0" fitWidth="60.0" pickOnBounds="true" preserveRatio="true">-->
+<!--                        <image>-->
+<!--                            <Image url="/Images/mute2.png" />-->
+<!--                        </image>-->
+<!--                    </ImageView>-->
+<!--                </graphic>-->
             </Button>
             </children>
             <padding>

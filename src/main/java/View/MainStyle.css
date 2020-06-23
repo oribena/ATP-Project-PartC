@@ -35,9 +35,24 @@ Button {
 }
 
 Button#mute{
+    -fx-background-image: url("/Images/mute2.png");
+    -fx-background-size: 60 60;
     -fx-background-radius: 100;
     -fx-background-color: transparent;
 }
+
+Button#mute:hover{
+     -fx-background-color: linear-gradient(#D2C385, lemonchiffon);
+ }
+
+/*Button#mute:focused{*/
+/*    -fx-background-image: url("/Images/blue.png");*/
+/*}*/
+
+
+
+
+
 Button#logo{
     -fx-background-color: transparent;
 

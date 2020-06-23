@@ -40,7 +40,8 @@ Button:hover{
 
 }
 
-ComboBox{
+
+MenuButton{
     -fx-text-fill: black;
     -fx-font-family: "Press Start 2P",Serif;
     -fx-font-weight: bold;

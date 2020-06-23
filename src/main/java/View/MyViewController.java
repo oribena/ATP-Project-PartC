@@ -12,6 +12,10 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
+
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.Observable;
@@ -156,7 +160,7 @@ public class MyViewController implements IView,Observer , Initializable {
                     H.setAlignment(CENTER);
                     layout.setAlignment(CENTER);
                     Button close = new Button();
-                    close.setText("play again!");
+                    close.setText("Close");
                     H.getChildren().add(close);
                     layout.spacingProperty().setValue(10);
                     Image im = new Image("/Images/wonGif.gif");
@@ -327,16 +331,80 @@ public class MyViewController implements IView,Observer , Initializable {
             Scene scene = new Scene(root, 960.0D, 614.0D);
             stage.setScene(scene);
             scene.getStylesheets().add(getClass().getResource("/View/LoadScene.css").toExternalForm());
-            stage.initModality(Modality.APPLICATION_MODAL);
+            //stage.initModality(Modality.APPLICATION_MODAL);
             stage.show();
         } catch (Exception var5) {
         }
 
     }
 
+
+//    public void Properties(ActionEvent actionEvent) {
+//        try {
+//            Stage stage = new Stage();
+//            stage.setTitle("Properties Configuration");
+//            VBox layout = new VBox();
+//            HBox H = new HBox(3);
+//
+//            Label genLabel = new Label("Choose Generator:");
+//            ComboBox<String> genCmb = new ComboBox<>();
+//            genCmb.setPromptText("MazeGenerator");
+//            genCmb.getItems().addAll("SimpleMazeGenerator", "MyMazeGenerator");
+//            H.getChildren().addAll(genLabel,genCmb);
+//            layout.getChildren().add(H);
+//            H.setAlignment(CENTER);
+//
+//            HBox H1 = new HBox(3);
+//            Label solLabel = new Label("Choose Solver:");
+//            ComboBox<String> solCmb = new ComboBox<>();
+//            solCmb.setPromptText("SearchingAlgorithm");
+//            solCmb.getItems().addAll("DepthFirstSearch", "BreadthFirstSearch","BestFirstSearch");
+//            H1.getChildren().addAll(solLabel,solCmb);
+//            layout.getChildren().add(H1);
+//            H1.setAlignment(CENTER);
+//
+//            layout.setAlignment(CENTER);
+//            Button close = new Button();
+//            close.setText("OK");
+//            layout.spacingProperty().setValue(30);
+//            layout.getChildren().addAll(close);
+//            close.setOnAction(new EventHandler<ActionEvent>() {
+//                @Override
+//                public void handle(ActionEvent event) {
+//                    FileOutputStream out = null;
+//                    try {
+//                        out = new FileOutputStream("resources/config.properties");
+//                    } catch (FileNotFoundException e) {
+//                        e.printStackTrace();
+//                    }
+//                    String str = "SearchingAlgorithm = "+solCmb.getValue() +"\nMazeGenerator = "+genCmb.getValue()+"\nServer.threadPoolSize = "+"3" ;
+//
+//                    byte[] bytesss = str.getBytes();
+//                    try {
+//                        out.write(bytesss);
+//                    } catch (IOException e) {
+//                        e.printStackTrace();
+//                    }
+//                    stage.close();
+//                }
+//            });
+//            Scene scene = new Scene(layout, 600, 270);
+//            scene.getStylesheets().add(getClass().getResource("/View/LoadScene.css").toExternalForm());
+//            stage.setScene(scene);
+//            stage.initModality(Modality.APPLICATION_MODAL); //Lock the window until it closes
+//            stage.show();
+//
+//
+//        } catch (Exception e) {
+//        }
+//    }
+
     public void load() {
+        buttonSolveMaze.setDisable(false);
+        buttonHideMaze.setDisable(true);
         viewModel.load();
     }
+
     public void save(){
         viewModel.save();
     }

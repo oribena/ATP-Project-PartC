@@ -80,6 +80,9 @@ public class MyModel extends Observable implements IModel {
     }
 
     private MyModel() {
+        Server.setConfigurations("MazeGenerator","MyMazeGenerator");
+        Server.setConfigurations("SearchingAlgorithm","Breadth First Search");
+        Server.setConfigurations("Server.threadPoolSize","3");
         mazeGeneratingServer = new Server(5400, 1000, new ServerStrategyGenerateMaze());
         LOG.info("Start generate maze server port 5400");
         solveSearchProblemServer = new Server(5401, 1000, new ServerStrategySolveSearchProblem());
@@ -90,7 +93,15 @@ public class MyModel extends Observable implements IModel {
         solveSearchProblemServer.start();
     }
 
-
+    @Override
+    public void stopServers() {
+        mazeGeneratingServer.stop();
+        LOG.info("Stop generate maze server");
+        solveSearchProblemServer.stop();
+        LOG.info("Stop Search Problem server");
+        mazeGeneratingServer=null;
+        solveSearchProblemServer=null;
+    }
 
     @Override
     public void generateMaze(int row, int col) {
@@ -130,15 +141,6 @@ public class MyModel extends Observable implements IModel {
             LOG.info("Exception");
             e.printStackTrace();
         }
-    }
-
-    @Override
-    public void stopServers() {
-        mazeGeneratingServer.stop();
-        LOG.info("Stop generate maze server");
-        solveSearchProblemServer.stop();
-        LOG.info("Stop Search Problem server");
-
     }
 
     @Override
@@ -350,8 +352,6 @@ public class MyModel extends Observable implements IModel {
                 FileInputStream Input = new FileInputStream(new File(f.getAbsolutePath()));
                 ObjectInputStream Out = new ObjectInputStream(Input);
                 maze = (Maze)Out.readObject();
-                mazeSolution = (Solution) Out.readObject();
-                mazeSolutionSteps = mazeSolution.getSolutionPath();
                 charPositionRow = (int) Out.readObject();
                 charPositionCol = (int) Out.readObject();
                 mazeArray = maze.getMat();
@@ -359,6 +359,8 @@ public class MyModel extends Observable implements IModel {
                 charPositionCol = maze.getStartPosition().getColumnIndex();
                 goalPosRow = maze.getGoalPosition().getRowIndex();
                 goalPosCol = maze.getGoalPosition().getColumnIndex();
+                mazeSolution = (Solution) Out.readObject();
+                mazeSolutionSteps = mazeSolution.getSolutionPath();
                 wonGame = false;
                 Input.close();
                 Out.close();
@@ -377,6 +379,7 @@ public class MyModel extends Observable implements IModel {
     }
 
     public void exitGame(){
+        LOG.info("Exiting game");
         stopServers();
         Main.exitGame();
     }

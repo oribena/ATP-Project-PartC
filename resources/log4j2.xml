@@ -2,7 +2,7 @@
 <Configuration status="info">
 
     <Properties>
-        <Property name="filename">Logs/Server.log</Property>
+        <Property name="filename">logs/Server.log</Property>
     </Properties>
 
     <Appenders>

@@ -2,7 +2,6 @@ package View;
 
 import algorithms.search.AState;
 import algorithms.search.MazeState;
-import algorithms.search.Solution;
 import javafx.scene.canvas.Canvas;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;

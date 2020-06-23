@@ -20,6 +20,7 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import javax.imageio.IIOParam;
+import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.Observable;
 import java.util.Optional;
@@ -31,15 +32,9 @@ import static javafx.geometry.Pos.CENTER;
 
 public class Main extends Application {
 
-    public static void exitGame(){
-        Platform.exit();
-        System.exit(0);
-    }
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        //FXMLLoader fxmlLoader = new FXMLLoader();
-        //Parent root = fxmlLoader.load(getClass().getResource("../View/MyView.fxml").openStream());
         MyModel model = MyModel.getInstance();
         MyViewModel viewModel = MyViewModel.getInstance();
         model.addObserver(viewModel);
@@ -49,7 +44,6 @@ public class Main extends Application {
         //exit game
         setStageCloseEvent(primaryStage, model);
         primaryStage.show();
-
 
         ////WELCOME SCENE
         try {
@@ -76,7 +70,6 @@ public class Main extends Application {
             Scene scene = new Scene(layout, 960, 614);
             scene.getStylesheets().add(getClass().getResource("/View/WelcomeStyle.css").toExternalForm());
             stage.setScene(scene);
-            //stage.initModality(Modality.APPLICATION_MODAL); //Lock the window until it closes
             stage.show();
         } catch (Exception e) {
         }
@@ -98,6 +91,10 @@ public class Main extends Application {
         });
     }
 
+    public static void exitGame(){
+        Platform.exit();
+        System.exit(0);
+    }
 
     public static void main(String[] args) {
         launch(args);
