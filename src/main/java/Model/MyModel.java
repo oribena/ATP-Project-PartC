@@ -3,7 +3,6 @@ package Model;
 import Client.Client;
 import Client.IClientStrategy;
 import IO.MyDecompressorInputStream;
-import java.io.*;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import algorithms.mazeGenerators.Maze;
@@ -111,14 +110,14 @@ public class MyModel extends Observable implements IModel {
                     LOG.info("Server is waiting for clients...");
                     LOG.info("client has been found!");
                     LOG.info("Generate maze");
-                    ObjectOutputStream toServer = new ObjectOutputStream(outToServer);
-                    ObjectInputStream fromServer = new ObjectInputStream(inFromServer);
+                    java.io.ObjectOutputStream toServer = new java.io.ObjectOutputStream(outToServer);
+                    java.io.ObjectInputStream fromServer = new java.io.ObjectInputStream(inFromServer);
                     toServer.flush();
                     int[] mazeDimensions = new int[]{row, col};
                     toServer.writeObject(mazeDimensions);
                     toServer.flush();
                     byte[] compressedMaze = (byte[]) fromServer.readObject();
-                    InputStream is = new MyDecompressorInputStream(new ByteArrayInputStream(compressedMaze));
+                    java.io.InputStream is = new MyDecompressorInputStream(new java.io.ByteArrayInputStream(compressedMaze));
                     byte[] decompressedMaze = new byte[(row * col) + 24];
                     is.read(decompressedMaze);
                     maze = new Maze(decompressedMaze);
@@ -151,8 +150,8 @@ public class MyModel extends Observable implements IModel {
                     LOG.info("Server is waiting for clients...");
                     LOG.info("client has been found!");
                     LOG.info("Solve maze");
-                    ObjectOutputStream toServer = new ObjectOutputStream(outToServer);
-                    ObjectInputStream fromServer = new ObjectInputStream(inFromServer);
+                    java.io.ObjectOutputStream toServer = new java.io.ObjectOutputStream(outToServer);
+                    java.io.ObjectInputStream fromServer = new java.io.ObjectInputStream(inFromServer);
                     toServer.flush();
                     toServer.writeObject(maze);
                     toServer.flush();
@@ -315,7 +314,7 @@ public class MyModel extends Observable implements IModel {
 
     protected void playAudio(String audio) {
         String musicFile = audio;
-        Media sound = new Media(new File(musicFile).toURI().toString());
+        Media sound = new Media(new java.io.File(musicFile).toURI().toString());
         mediaPlayer = new MediaPlayer(sound);
         mediaPlayer.play();
     }
@@ -323,10 +322,10 @@ public class MyModel extends Observable implements IModel {
     public void save() {
         JFileChooser file = new JFileChooser();
         if (file.showSaveDialog(null) == JFileChooser.APPROVE_OPTION){
-            File f = file.getSelectedFile();
+            java.io.File f = file.getSelectedFile();
             try{
-                FileOutputStream fos = new FileOutputStream(new File(f.getAbsolutePath()));
-                ObjectOutputStream oos = new ObjectOutputStream(fos);
+                java.io.FileOutputStream fos = new java.io.FileOutputStream(new java.io.File(f.getAbsolutePath()));
+                java.io.ObjectOutputStream oos = new java.io.ObjectOutputStream(fos);
                 oos.writeObject(maze);
                 oos.writeObject(charPositionRow);
                 oos.writeObject(charPositionCol);
@@ -335,9 +334,9 @@ public class MyModel extends Observable implements IModel {
                 fos.close();
                 oos.flush();
                 oos.close();
-            } catch (FileNotFoundException e) {
+            } catch (java.io.FileNotFoundException e) {
                 e.printStackTrace();
-            } catch (IOException e) {
+            } catch (java.io.IOException e) {
                 e.printStackTrace();
             }
         }
@@ -346,11 +345,11 @@ public class MyModel extends Observable implements IModel {
     public void load(){
         JFileChooser fc = new JFileChooser();
         if (fc.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
-            File f = fc.getSelectedFile();
+            java.io.File f = fc.getSelectedFile();
 
             try {
-                FileInputStream Input = new FileInputStream(new File(f.getAbsolutePath()));
-                ObjectInputStream Out = new ObjectInputStream(Input);
+                java.io.FileInputStream Input = new java.io.FileInputStream(new java.io.File(f.getAbsolutePath()));
+                java.io.ObjectInputStream Out = new java.io.ObjectInputStream(Input);
                 maze = (Maze)Out.readObject();
                 charPositionRow = (int) Out.readObject();
                 charPositionCol = (int) Out.readObject();
@@ -366,9 +365,9 @@ public class MyModel extends Observable implements IModel {
                 Out.close();
 
             }
-            catch (FileNotFoundException e) {
+            catch (java.io.FileNotFoundException e) {
                 e.printStackTrace();
-            } catch (IOException e) {
+            } catch (java.io.IOException e) {
                 e.printStackTrace();
             } catch (ClassNotFoundException e) {
                 e.printStackTrace();

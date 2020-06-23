@@ -7,15 +7,10 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
-import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
-
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.Observable;
@@ -30,9 +25,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.media.Media;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
-import javafx.scene.control.Alert;
 import javafx.event.EventHandler;
 import static javafx.geometry.Pos.CENTER;
 
@@ -40,23 +33,23 @@ public class MyViewController implements IView,Observer , Initializable {
 
     protected MyViewModel viewModel = MyViewModel.getInstance();
     @FXML
-    public TextField textField_mazeRows;
+    public javafx.scene.control.TextField textField_mazeRows;
     @FXML
-    public TextField textField_mazeColumns;
+    public javafx.scene.control.TextField textField_mazeColumns;
     @FXML
     public MazeDisplayer mazeDisplayer;
     @FXML
-    public Label lbl_player_row;
+    public javafx.scene.control.Label lbl_player_row;
     @FXML
-    public Label lbl_player_column;
+    public javafx.scene.control.Label lbl_player_column;
     @FXML
-    public Button buttonGenerateMaze;
+    public javafx.scene.control.Button buttonGenerateMaze;
     @FXML
-    public Button buttonSolveMaze;
+    public javafx.scene.control.Button buttonSolveMaze;
     @FXML
-    public Button mute;
+    public javafx.scene.control.Button mute;
     @FXML
-    public Button buttonHideMaze;
+    public javafx.scene.control.Button buttonHideMaze;
     @FXML
     public Pane pane;
     @FXML
@@ -164,7 +157,7 @@ public class MyViewController implements IView,Observer , Initializable {
                     HBox H = new HBox(5);
                     H.setAlignment(CENTER);
                     layout.setAlignment(CENTER);
-                    Button close = new Button();
+                    javafx.scene.control.Button close = new javafx.scene.control.Button();
                     close.setText("Close");
                     H.getChildren().add(close);
                     layout.spacingProperty().setValue(10);
@@ -216,7 +209,7 @@ public class MyViewController implements IView,Observer , Initializable {
     }
 
     public static void showAlert(String alertMessage) {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        javafx.scene.control.Alert alert = new javafx.scene.control.Alert(javafx.scene.control.Alert.AlertType.INFORMATION);
         alert.setContentText(alertMessage);
         alert.show();
     }
@@ -272,9 +265,9 @@ public class MyViewController implements IView,Observer , Initializable {
             stage.setTitle("F.R.I.E.N.D.S Maze");
             VBox layout = new VBox();
             layout.setAlignment(CENTER);
-            Button close = new Button();
+            javafx.scene.control.Button close = new javafx.scene.control.Button();
             close.setText("Back");
-            Label label = new Label("Hey guys,\n" +
+            javafx.scene.control.Label label = new javafx.scene.control.Label("Hey guys,\n" +
                     "Help Ross reach the central perk cafe safetly!! \n" +
                     "Algorithms used: BestFirstSearch, BreadthFirstSearch, DepthFirstSearch\n\n" +
                     "Developers:\n" + "Noaa Kless " + "and " + "Ori Ben-Artzy\n\n" + "HAVE FUN!");
@@ -307,9 +300,9 @@ public class MyViewController implements IView,Observer , Initializable {
             stage.setTitle("F.R.I.E.N.D.S Maze");
             VBox layout = new VBox();
             layout.setAlignment(CENTER);
-            Button close = new Button();
+            javafx.scene.control.Button close = new javafx.scene.control.Button();
             close.setText("Back");
-            Label label = new Label("Guide,\nPress: \nNUMPAD 2 - To go UP \nNUMPAD 8 - To go DOWN \nNUMPAD 6 - To go RIGHT \nNUMPAD 4 - To go LEFT \nNUMPAD 3 - To go UP & RIGHT \nNUMPAD 1 - To go UP & LEFT \nNUMPAD 9 - To go DOWN & RIGHT \nNUMPAD 7 - To go DOWN & LEFT \n\nYou can save and load the mazes.\n If you have a problem with the maze - I'LL BE THERE FOR YOU!!\n You can see the solution by pressing the solve button.");
+            javafx.scene.control.Label label = new javafx.scene.control.Label("Guide,\nPress: \nNUMPAD 2 - To go UP \nNUMPAD 8 - To go DOWN \nNUMPAD 6 - To go RIGHT \nNUMPAD 4 - To go LEFT \nNUMPAD 3 - To go UP & RIGHT \nNUMPAD 1 - To go UP & LEFT \nNUMPAD 9 - To go DOWN & RIGHT \nNUMPAD 7 - To go DOWN & LEFT \n\nYou can save and load the mazes.\n If you have a problem with the maze - I'LL BE THERE FOR YOU!!\n You can see the solution by pressing the solve button.");
             label.setAlignment(CENTER);
             label.setLineSpacing(2);
             layout.spacingProperty().setValue(30);
@@ -344,72 +337,12 @@ public class MyViewController implements IView,Observer , Initializable {
 
     }
 
-
-//    public void Properties(ActionEvent actionEvent) {
-//        try {
-//            Stage stage = new Stage();
-//            stage.setTitle("Properties Configuration");
-//            VBox layout = new VBox();
-//            HBox H = new HBox(3);
-//
-//            Label genLabel = new Label("Choose Generator:");
-//            ComboBox<String> genCmb = new ComboBox<>();
-//            genCmb.setPromptText("MazeGenerator");
-//            genCmb.getItems().addAll("SimpleMazeGenerator", "MyMazeGenerator");
-//            H.getChildren().addAll(genLabel,genCmb);
-//            layout.getChildren().add(H);
-//            H.setAlignment(CENTER);
-//
-//            HBox H1 = new HBox(3);
-//            Label solLabel = new Label("Choose Solver:");
-//            ComboBox<String> solCmb = new ComboBox<>();
-//            solCmb.setPromptText("SearchingAlgorithm");
-//            solCmb.getItems().addAll("DepthFirstSearch", "BreadthFirstSearch","BestFirstSearch");
-//            H1.getChildren().addAll(solLabel,solCmb);
-//            layout.getChildren().add(H1);
-//            H1.setAlignment(CENTER);
-//
-//            layout.setAlignment(CENTER);
-//            Button close = new Button();
-//            close.setText("OK");
-//            layout.spacingProperty().setValue(30);
-//            layout.getChildren().addAll(close);
-//            close.setOnAction(new EventHandler<ActionEvent>() {
-//                @Override
-//                public void handle(ActionEvent event) {
-//                    FileOutputStream out = null;
-//                    try {
-//                        out = new FileOutputStream("resources/config.properties");
-//                    } catch (FileNotFoundException e) {
-//                        e.printStackTrace();
-//                    }
-//                    String str = "SearchingAlgorithm = "+solCmb.getValue() +"\nMazeGenerator = "+genCmb.getValue()+"\nServer.threadPoolSize = "+"3" ;
-//
-//                    byte[] bytesss = str.getBytes();
-//                    try {
-//                        out.write(bytesss);
-//                    } catch (IOException e) {
-//                        e.printStackTrace();
-//                    }
-//                    stage.close();
-//                }
-//            });
-//            Scene scene = new Scene(layout, 600, 270);
-//            scene.getStylesheets().add(getClass().getResource("/View/LoadScene.css").toExternalForm());
-//            stage.setScene(scene);
-//            stage.initModality(Modality.APPLICATION_MODAL); //Lock the window until it closes
-//            stage.show();
-//
-//
-//        } catch (Exception e) {
-//        }
-//    }
-
     public void load() {
         if (alreadyGenerate == false) {
             showAlert("Please generate maze first");
         }
         else {
+            viewModel.pauseMusic();
             buttonSolveMaze.setDisable(false);
             buttonHideMaze.setDisable(true);
             viewModel.load();
@@ -431,9 +364,9 @@ public class MyViewController implements IView,Observer , Initializable {
         } catch (URISyntaxException e) {
             e.printStackTrace();
         }
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Are you sure you want to EXIT?");
-        Optional<ButtonType> result = alert.showAndWait();
-        if (result.get() == ButtonType.OK) {
+        javafx.scene.control.Alert alert = new javafx.scene.control.Alert(javafx.scene.control.Alert.AlertType.CONFIRMATION, "Are you sure you want to EXIT?");
+        Optional<javafx.scene.control.ButtonType> result = alert.showAndWait();
+        if (result.get() == javafx.scene.control.ButtonType.OK) {
             viewModel.exitGame();
         } else {
 
