@@ -1,8 +1,6 @@
 package sample;
 
-import Model.IModel;
 import Model.MyModel;
-import View.MyViewController;
 import ViewModel.MyViewModel;
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -16,22 +14,16 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
-
-import javax.imageio.IIOParam;
-import java.io.IOException;
-import java.net.URISyntaxException;
-import java.util.Observable;
+import java.io.File;
 import java.util.Optional;
-
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
-
 import static javafx.geometry.Pos.CENTER;
 
 public class Main extends Application {
 
+    private  MediaPlayer mediaPlayer;
 
     @Override
     public void start(Stage primaryStage) throws Exception {
@@ -79,8 +71,11 @@ public class Main extends Application {
     private void setStageCloseEvent(Stage primaryStage, MyModel model) {
         primaryStage.setOnCloseRequest(event -> {
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Are you sure you want to EXIT?");
+            playAudio("resources/Music/break.mp3");
+
             Optional<ButtonType> result = alert.showAndWait();
             if (result.get() == ButtonType.OK) {
+
                 model.close();
                 primaryStage.close();
                 MyViewModel.getInstance().exitGame();
@@ -95,7 +90,12 @@ public class Main extends Application {
         Platform.exit();
         System.exit(0);
     }
-
+    protected void playAudio(String audio) {
+        String musicFile = audio;
+        Media sound = new Media(new File(musicFile).toURI().toString());
+        mediaPlayer = new MediaPlayer(sound);
+        mediaPlayer.play();
+    }
     public static void main(String[] args) {
         launch(args);
     }
