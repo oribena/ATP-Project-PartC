@@ -190,24 +190,25 @@ public class MyViewController implements IView,Observer , Initializable {
         }
     }
 
-    public void zoom(MazeDisplayer pane) {
+    //Zoom in and out
+    private void zoom(MazeDisplayer pane) {
         pane.setOnScroll(
                 new EventHandler<ScrollEvent>() {
                     @Override
                     public void handle(ScrollEvent event) {
-                        double zoomFactor = 1.05;
-                        double deltaY = event.getDeltaY();
+                        if (event.isControlDown()) {
+                            double zoomFactor = 1.05;
+                            double deltaY = event.getDeltaY();
 
-                        if (deltaY < 0) {
-                            zoomFactor = 0.95;
+                            if (deltaY < 0) {
+                                zoomFactor = 0.95;
+                            }
+                            pane.setScaleX(pane.getScaleX() * zoomFactor);
+                            pane.setScaleY(pane.getScaleY() * zoomFactor);
+                            event.consume();
                         }
-                        pane.setScaleX(pane.getScaleX() * zoomFactor);
-                        pane.setScaleY(pane.getScaleY() * zoomFactor);
-                        event.consume();
                     }
                 });
-
-
     }
 
     public static void showAlert(String alertMessage) {
