@@ -173,7 +173,9 @@ public class MyViewController implements IView,Observer , Initializable {
                     close.setOnAction(new EventHandler<ActionEvent>() {
                         @Override
                         public void handle(ActionEvent event) {
+                            viewModel.pauseMusic();
                             stage.close();
+
                         }
                     });
                 }
